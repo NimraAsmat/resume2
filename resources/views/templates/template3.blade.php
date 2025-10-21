@@ -25,6 +25,7 @@
             padding: 30px; 
             margin: -40px -40px 30px -40px; 
             text-align: center; 
+            border-radius: 0 0 10px 10px;
         }
         .header h1 { 
             font-size: 32px; 
@@ -41,7 +42,7 @@
             color: #059669; 
             font-size: 18px; 
             font-weight: bold; 
-            border-left: 4px solid #059669; 
+            
             padding-left: 10px; 
             margin-bottom: 15px; 
         }
@@ -50,6 +51,7 @@
             padding: 15px; 
             margin-bottom: 15px; 
             border-radius: 5px; 
+            border-left: 3px solid #059669;
         }
         .job-title, .edu-degree { 
             font-weight: bold; 
@@ -73,11 +75,16 @@
         li { 
             margin-bottom: 5px; 
         }
+        .personal-info {
+            background: #ecfdf5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        
         <div class="header">
             <h1>{{ $first_name ?? 'First Name' }} {{ $last_name ?? 'Last Name' }}</h1>
             <p>{{ $occupation ?? 'Professional' }}</p>
@@ -90,7 +97,21 @@
             </p>
         </div>
 
-       
+        @if(!empty($dob) || !empty($gender) || !empty($nationality))
+        <div class="personal-info">
+            <div class="section-title">PERSONAL INFORMATION</div>
+            @if(!empty($dob))
+            <p><strong>Date of Birth:</strong> {{ $dob }}</p>
+            @endif
+            @if(!empty($gender))
+            <p><strong>Gender:</strong> {{ $gender }}</p>
+            @endif
+            @if(!empty($nationality))
+            <p><strong>Nationality:</strong> {{ $nationality }}</p>
+            @endif
+        </div>
+        @endif
+
         @if(!empty($summary))
         <div class="section">
             <div class="section-title">PROFESSIONAL SUMMARY</div>
@@ -98,49 +119,46 @@
         </div>
         @endif
 
-   
-        @if(!empty($employment) && count($employment) > 0)
+        @if(!empty($job_title) && count($job_title) > 0)
         <div class="section">
             <div class="section-title">WORK EXPERIENCE</div>
-            @foreach($employment as $job)
+            @foreach($job_title as $index => $title)
             <div class="job-item">
-                <div class="job-title">{{ $job['job_title'] ?? 'Job Title' }}</div>
-                <div class="company">{{ $job['company'] ?? '' }}</div>
+                <div class="job-title">{{ $title ?? 'Job Title' }}</div>
+                <div class="company">{{ $company[$index] ?? '' }}</div>
                 <div class="date">
-                    {{ $job['job_start'] ?? '' }} 
-                    @if(!empty($job['job_start']) && !empty($job['job_end'])) - @endif 
-                    {{ $job['job_end'] ?? '' }}
+                    {{ $job_start[$index] ?? '' }} 
+                    @if(!empty($job_start[$index]) && !empty($job_end[$index])) - @endif 
+                    {{ $job_end[$index] ?? '' }}
                 </div>
-                @if(!empty($job['job_description']))
-                <p>{{ $job['job_description'] }}</p>
+                @if(!empty($job_description[$index]))
+                <p>{{ $job_description[$index] }}</p>
                 @endif
             </div>
             @endforeach
         </div>
         @endif
 
-      
-        @if(!empty($education) && count($education) > 0)
+        @if(!empty($degree) && count($degree) > 0)
         <div class="section">
             <div class="section-title">EDUCATION</div>
-            @foreach($education as $edu)
+            @foreach($degree as $index => $deg)
             <div class="edu-item">
-                <div class="edu-degree">{{ $edu['degree'] ?? 'Degree' }}</div>
-                <div class="school">{{ $edu['school'] ?? '' }}</div>
+                <div class="edu-degree">{{ $deg ?? 'Degree' }}</div>
+                <div class="school">{{ $school[$index] ?? '' }}</div>
                 <div class="date">
-                    {{ $edu['edu_start'] ?? '' }} 
-                    @if(!empty($edu['edu_start']) && !empty($edu['edu_end'])) - @endif 
-                    {{ $edu['edu_end'] ?? '' }}
+                    {{ $edu_start[$index] ?? '' }} 
+                    @if(!empty($edu_start[$index]) && !empty($edu_end[$index])) - @endif 
+                    {{ $edu_end[$index] ?? '' }}
                 </div>
-                @if(!empty($edu['edu_description']))
-                <p>{{ $edu['edu_description'] }}</p>
+                @if(!empty($edu_description[$index]))
+                <p>{{ $edu_description[$index] }}</p>
                 @endif
             </div>
             @endforeach
         </div>
         @endif
 
-     
         @if(!empty($hobbies) || !empty($interests))
         <div class="section">
             <div class="section-title">ADDITIONAL DETAILS</div>
@@ -153,7 +171,6 @@
         </div>
         @endif
 
-       
         @if((!empty($skills) && count($skills) > 0) || (!empty($languages) && count($languages) > 0))
         <div class="section">
             <div class="grid-2">
@@ -161,8 +178,8 @@
                 <div>
                     <div class="section-title">SKILLS</div>
                     <ul>
-                        @foreach($skills as $skill)
-                            <li>{{ $skill }}</li>
+                        @foreach($skills as $index => $skill)
+                            <li>{{ $skill }} @if(!empty($skill_level[$index])) ({{ $skill_level[$index] }}) @endif</li>
                         @endforeach
                     </ul>
                 </div>
@@ -172,8 +189,8 @@
                 <div>
                     <div class="section-title">LANGUAGES</div>
                     <ul>
-                        @foreach($languages as $lang)
-                            <li>{{ $lang }}</li>
+                        @foreach($languages as $index => $lang)
+                            <li>{{ $lang }} @if(!empty($language_level[$index])) ({{ $language_level[$index] }}) @endif</li>
                         @endforeach
                     </ul>
                 </div>
@@ -182,7 +199,6 @@
         </div>
         @endif
 
-    
         <div style="margin-top: 40px; font-size: 12px; text-align: center; border-top: 1px solid #e5e7eb; padding-top: 20px;">
             Generated on: {{ date('F j, Y') }}
         </div>

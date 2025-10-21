@@ -32,70 +32,86 @@
         h3 {
             color: #2563eb; 
             font-size: 20px;
+            border-bottom: 1px solid #2563eb;
+            padding-bottom: 5px;
+            margin-top: 20px; /* Reduced from 25px */
+            margin-bottom: 12px; /* Added for better spacing */
         }
 
         p, li {
             font-size: 16px;
         }
 
-        em { font-style: italic; } 
-
         .contact-info {
+            background: #ffffff;
             padding: 15px 20px;
             border-radius: 5px;
-            margin-bottom: 30px;
+            margin-bottom: 25px; /* Reduced from 30px */
         }
 
         .contact-info ul {
-            list-style-type: disc; 
+            list-style-type: disc;
             padding-left: 20px;
             margin: 0;
         }
 
         .contact-info li {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .section {
-            margin-bottom: 15px; 
+            margin-bottom: 15px; /* Reduced from 20px */
         }
 
-        .job-item, .edu-item p {
-            margin: 5px 0; 
+        .job-item, .edu-item {
+            margin-bottom: 15px; /* Reduced from 20px */
+            padding-bottom: 12px; /* Reduced from 15px */
+            /* border-bottom removed */
         }
 
-        strong {
-            color: #000; 
+        .job-header, .edu-header {
+            display: block;
+            margin-bottom: 6px; /* Reduced from 8px */
         }
 
-        .edu-item strong {
-            color: #000; 
+        .job-title, .edu-degree {
             font-weight: bold;
+            color: #1e40af;
+            font-size: 18px;
+        }
+
+        .company, .school {
+            font-style: italic;
+            color: #4b5563;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+
+        .date {
+            color: #6b7280;
+            font-size: 14px;
+            font-style: italic;
+            margin-top: 3px; /* Reduced from 5px */
+        }
+
+        .job-description, .edu-description {
+            margin-top: 8px; /* Reduced from 10px */
+            color: #374151;
         }
 
         ul.skills, ul.languages {
             padding-left: 20px;
             list-style-type: disc;
-        }
-
-        ul {
-            margin: 5px 0; 
-            padding-left: 20px; 
+            margin-top: 8px; /* Added for better spacing */
         }
 
         .footer {
-            margin-top: 40px;
+            margin-top: 30px; /* Reduced from 40px */
             color: #666;
             font-size: 12px;
             text-align: center;
             border-top: 1px solid #e5e7eb;
             padding-top: 15px;
-        }
-
-        
-        h1, h3, p, li {
-            margin: 0;
-            padding: 0;
         }
     </style>
 </head>
@@ -108,9 +124,17 @@
                 <li><strong>Email:</strong> <?php echo e($email ?? 'N/A'); ?></li>
                 <li><strong>Phone:</strong> <?php echo e($phone ?? 'N/A'); ?></li>
                 <li><strong>Occupation:</strong> <?php echo e($occupation ?? 'N/A'); ?></li>
-                <li><strong>Country:</strong> <?php echo e($country ?? 'N/A'); ?></li>
+                <?php if(!empty($country)): ?>
+                    <li><strong>Country:</strong> <?php echo e($country); ?></li>
+                <?php endif; ?>
                 <?php if(!empty($nationality)): ?>
                     <li><strong>Nationality:</strong> <?php echo e($nationality); ?></li>
+                <?php endif; ?>
+                <?php if(!empty($dob)): ?>
+                    <li><strong>Date of Birth:</strong> <?php echo e(\Carbon\Carbon::parse($dob)->format('F j, Y')); ?></li>
+                <?php endif; ?>
+                <?php if(!empty($gender)): ?>
+                    <li><strong>Gender:</strong> <?php echo e($gender); ?></li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -122,65 +146,50 @@
         </div>
         <?php endif; ?>
 
-        <?php if(!empty($employment) && count($employment) > 0): ?>
+        <?php if(!empty($job_title) && count($job_title) > 0): ?>
         <div class="section">
             <h3>Employment History</h3>
-            <?php $__currentLoopData = $employment; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php $__currentLoopData = $job_title; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $title): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="job-item">
-                <strong><?php echo e($job['job_title'] ?? 'Job Title'); ?>
+                <div class="job-header">
+                    <div>
+                        <span class="job-title"><?php echo e($title ?? 'Job Title'); ?></span>
+                        <span class="company">at <?php echo e($company[$index] ?? ''); ?></span>
+                    </div>
+                    <div class="date">
+                        <?php echo e($job_start[$index] ?? ''); ?> 
+                        <?php if(!empty($job_start[$index]) && !empty($job_end[$index])): ?> - <?php endif; ?> 
+                        <?php echo e($job_end[$index] ?? ''); ?>
 
-                <?php if(!empty($job['company'])): ?>
-                    at <?php echo e($job['company']); ?>
-
-                <?php endif; ?>
-                </strong>
-                <br>
-                <?php if(!empty($job['job_start']) || !empty($job['job_end'])): ?>
-                    <em>
-                        <?php echo e($job['job_start'] ?? 'Start'); ?>
-
-                        <?php if(!empty($job['job_start']) && !empty($job['job_end'])): ?> - <?php endif; ?>
-                        <?php echo e($job['job_end'] ?? 'End'); ?>
-
-                    </em>
-                    <br>
-                <?php endif; ?>
-                <?php if(!empty($job['job_description'])): ?>
-                    <?php echo e($job['job_description']); ?>
-
+                    </div>
+                </div>
+                <?php if(!empty($job_description[$index])): ?>
+                <div class="job-description"><?php echo e($job_description[$index]); ?></div>
                 <?php endif; ?>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
         <?php endif; ?>
 
-        <?php if(!empty($education) && count($education) > 0): ?>
+        <?php if(!empty($degree) && count($degree) > 0): ?>
         <div class="section">
             <h3>Education</h3>
-            <?php $__currentLoopData = $education; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $edu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php $__currentLoopData = $degree; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $deg): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="edu-item">
-                <strong>
-                    <?php echo e($edu['degree'] ?? 'Degree'); ?>
+                <div class="edu-header">
+                    <div>
+                        <span class="edu-degree"><?php echo e($deg ?? 'Degree'); ?></span>
+                        <span class="school">at <?php echo e($school[$index] ?? ''); ?></span>
+                    </div>
+                    <div class="date">
+                        <?php echo e($edu_start[$index] ?? ''); ?> 
+                        <?php if(!empty($edu_start[$index]) && !empty($edu_end[$index])): ?> - <?php endif; ?> 
+                        <?php echo e($edu_end[$index] ?? ''); ?>
 
-                    <?php if(!empty($edu['school'])): ?>
-                        at <?php echo e($edu['school']); ?>
-
-                    <?php endif; ?>
-                </strong>
-                <br>
-                <?php if(!empty($edu['edu_start']) || !empty($edu['edu_end'])): ?>
-                    <em>
-                        <?php echo e($edu['edu_start'] ?? 'Start'); ?>
-
-                        <?php if(!empty($edu['edu_start']) && !empty($edu['edu_end'])): ?> - <?php endif; ?>
-                        <?php echo e($edu['edu_end'] ?? 'End'); ?>
-
-                    </em>
-                    <br>
-                <?php endif; ?>
-                <?php if(!empty($edu['edu_description'])): ?>
-                    <?php echo e($edu['edu_description']); ?>
-
+                    </div>
+                </div>
+                <?php if(!empty($edu_description[$index])): ?>
+                <div class="edu-description"><?php echo e($edu_description[$index]); ?></div>
                 <?php endif; ?>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -191,8 +200,8 @@
         <div class="section">
             <h3>Skills</h3>
             <ul class="skills">
-                <?php $__currentLoopData = $skills; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $skill): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <li><?php echo e($skill); ?></li>
+                <?php $__currentLoopData = $skills; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $skill): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li><?php echo e($skill); ?> <?php if(!empty($skill_level[$index])): ?> (<?php echo e($skill_level[$index]); ?>) <?php endif; ?></li>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
@@ -202,8 +211,8 @@
         <div class="section">
             <h3>Languages</h3>
             <ul class="languages">
-                <?php $__currentLoopData = $languages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <li><?php echo e($lang); ?></li>
+                <?php $__currentLoopData = $languages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $lang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li><?php echo e($lang); ?> <?php if(!empty($language_level[$index])): ?> (<?php echo e($language_level[$index]); ?>) <?php endif; ?></li>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
@@ -227,5 +236,4 @@
         </div>
     </div>
 </body>
-</html>
-<?php /**PATH C:\laragon\www\resume2\resources\views/templates/template1.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\laragon\www\resume2\resources\views/templates/template1.blade.php ENDPATH**/ ?>

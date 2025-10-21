@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('resume_id')->constrained('resumes')->onDelete('cascade');
             $table->string('language', 100);
+            $table->enum('language_level', ['Native', 'Fluent', 'Advanced', 'Intermediate', 'Basic'])->nullable();
             $table->timestamps();
         });
     }

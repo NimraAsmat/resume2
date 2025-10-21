@@ -32,70 +32,86 @@
         h3 {
             color: #2563eb; 
             font-size: 20px;
+            border-bottom: 1px solid #2563eb;
+            padding-bottom: 5px;
+            margin-top: 20px; /* Reduced from 25px */
+            margin-bottom: 12px; /* Added for better spacing */
         }
 
         p, li {
             font-size: 16px;
         }
 
-        em { font-style: italic; } 
-
         .contact-info {
+            background: #ffffff;
             padding: 15px 20px;
             border-radius: 5px;
-            margin-bottom: 30px;
+            margin-bottom: 25px; /* Reduced from 30px */
         }
 
         .contact-info ul {
-            list-style-type: disc; 
+            list-style-type: disc;
             padding-left: 20px;
             margin: 0;
         }
 
         .contact-info li {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .section {
-            margin-bottom: 15px; 
+            margin-bottom: 15px; /* Reduced from 20px */
         }
 
-        .job-item, .edu-item p {
-            margin: 5px 0; 
+        .job-item, .edu-item {
+            margin-bottom: 15px; /* Reduced from 20px */
+            padding-bottom: 12px; /* Reduced from 15px */
+            /* border-bottom removed */
         }
 
-        strong {
-            color: #000; 
+        .job-header, .edu-header {
+            display: block;
+            margin-bottom: 6px; /* Reduced from 8px */
         }
 
-        .edu-item strong {
-            color: #000; 
+        .job-title, .edu-degree {
             font-weight: bold;
+            color: #1e40af;
+            font-size: 18px;
+        }
+
+        .company, .school {
+            font-style: italic;
+            color: #4b5563;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+
+        .date {
+            color: #6b7280;
+            font-size: 14px;
+            font-style: italic;
+            margin-top: 3px; /* Reduced from 5px */
+        }
+
+        .job-description, .edu-description {
+            margin-top: 8px; /* Reduced from 10px */
+            color: #374151;
         }
 
         ul.skills, ul.languages {
             padding-left: 20px;
             list-style-type: disc;
-        }
-
-        ul {
-            margin: 5px 0; 
-            padding-left: 20px; 
+            margin-top: 8px; /* Added for better spacing */
         }
 
         .footer {
-            margin-top: 40px;
+            margin-top: 30px; /* Reduced from 40px */
             color: #666;
             font-size: 12px;
             text-align: center;
             border-top: 1px solid #e5e7eb;
             padding-top: 15px;
-        }
-
-        
-        h1, h3, p, li {
-            margin: 0;
-            padding: 0;
         }
     </style>
 </head>
@@ -108,9 +124,17 @@
                 <li><strong>Email:</strong> {{ $email ?? 'N/A' }}</li>
                 <li><strong>Phone:</strong> {{ $phone ?? 'N/A' }}</li>
                 <li><strong>Occupation:</strong> {{ $occupation ?? 'N/A' }}</li>
-                <li><strong>Country:</strong> {{ $country ?? 'N/A' }}</li>
+                @if(!empty($country))
+                    <li><strong>Country:</strong> {{ $country }}</li>
+                @endif
                 @if(!empty($nationality))
                     <li><strong>Nationality:</strong> {{ $nationality }}</li>
+                @endif
+                @if(!empty($dob))
+                    <li><strong>Date of Birth:</strong> {{ \Carbon\Carbon::parse($dob)->format('F j, Y') }}</li>
+                @endif
+                @if(!empty($gender))
+                    <li><strong>Gender:</strong> {{ $gender }}</li>
                 @endif
             </ul>
         </div>
@@ -122,55 +146,48 @@
         </div>
         @endif
 
-        @if(!empty($employment) && count($employment) > 0)
+        @if(!empty($job_title) && count($job_title) > 0)
         <div class="section">
             <h3>Employment History</h3>
-            @foreach($employment as $job)
+            @foreach($job_title as $index => $title)
             <div class="job-item">
-                <strong>{{ $job['job_title'] ?? 'Job Title' }}
-                @if(!empty($job['company']))
-                    at {{ $job['company'] }}
-                @endif
-                </strong>
-                <br>
-                @if(!empty($job['job_start']) || !empty($job['job_end']))
-                    <em>
-                        {{ $job['job_start'] ?? 'Start' }}
-                        @if(!empty($job['job_start']) && !empty($job['job_end'])) - @endif
-                        {{ $job['job_end'] ?? 'End' }}
-                    </em>
-                    <br>
-                @endif
-                @if(!empty($job['job_description']))
-                    {{ $job['job_description'] }}
+                <div class="job-header">
+                    <div>
+                        <span class="job-title">{{ $title ?? 'Job Title' }}</span>
+                        <span class="company">at {{ $company[$index] ?? '' }}</span>
+                    </div>
+                    <div class="date">
+                        {{ $job_start[$index] ?? '' }} 
+                        @if(!empty($job_start[$index]) && !empty($job_end[$index])) - @endif 
+                        {{ $job_end[$index] ?? '' }}
+                    </div>
+                </div>
+                @if(!empty($job_description[$index]))
+                <div class="job-description">{{ $job_description[$index] }}</div>
                 @endif
             </div>
             @endforeach
         </div>
         @endif
 
-        @if(!empty($education) && count($education) > 0)
+        @if(!empty($degree) && count($degree) > 0)
         <div class="section">
             <h3>Education</h3>
-            @foreach($education as $edu)
+            @foreach($degree as $index => $deg)
             <div class="edu-item">
-                <strong>
-                    {{ $edu['degree'] ?? 'Degree' }}
-                    @if(!empty($edu['school']))
-                        at {{ $edu['school'] }}
-                    @endif
-                </strong>
-                <br>
-                @if(!empty($edu['edu_start']) || !empty($edu['edu_end']))
-                    <em>
-                        {{ $edu['edu_start'] ?? 'Start' }}
-                        @if(!empty($edu['edu_start']) && !empty($edu['edu_end'])) - @endif
-                        {{ $edu['edu_end'] ?? 'End' }}
-                    </em>
-                    <br>
-                @endif
-                @if(!empty($edu['edu_description']))
-                    {{ $edu['edu_description'] }}
+                <div class="edu-header">
+                    <div>
+                        <span class="edu-degree">{{ $deg ?? 'Degree' }}</span>
+                        <span class="school">at {{ $school[$index] ?? '' }}</span>
+                    </div>
+                    <div class="date">
+                        {{ $edu_start[$index] ?? '' }} 
+                        @if(!empty($edu_start[$index]) && !empty($edu_end[$index])) - @endif 
+                        {{ $edu_end[$index] ?? '' }}
+                    </div>
+                </div>
+                @if(!empty($edu_description[$index]))
+                <div class="edu-description">{{ $edu_description[$index] }}</div>
                 @endif
             </div>
             @endforeach
@@ -181,8 +198,8 @@
         <div class="section">
             <h3>Skills</h3>
             <ul class="skills">
-                @foreach($skills as $skill)
-                    <li>{{ $skill }}</li>
+                @foreach($skills as $index => $skill)
+                    <li>{{ $skill }} @if(!empty($skill_level[$index])) ({{ $skill_level[$index] }}) @endif</li>
                 @endforeach
             </ul>
         </div>
@@ -192,8 +209,8 @@
         <div class="section">
             <h3>Languages</h3>
             <ul class="languages">
-                @foreach($languages as $lang)
-                    <li>{{ $lang }}</li>
+                @foreach($languages as $index => $lang)
+                    <li>{{ $lang }} @if(!empty($language_level[$index])) ({{ $language_level[$index] }}) @endif</li>
                 @endforeach
             </ul>
         </div>

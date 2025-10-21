@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>Resume - {{ $first_name ?? '' }} {{ $last_name ?? '' }}</title>
     <style>
-        
         body {
             font-family: Calibri, Arial, sans-serif;
             background: #fff;
@@ -23,10 +22,11 @@
             border-radius: 8px;
         }
 
-        
         .header {
             text-align: center; 
             margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 20px;
         }
 
         .header h1 {
@@ -34,6 +34,7 @@
             font-size: 36px;
             margin: 0;
             font-weight: bold;
+            color: #000;
         }
 
         .header p.profession {
@@ -48,7 +49,6 @@
             color: #555;
         }
 
-        
         .section-title {
             font-size: 18px;
             font-weight: bold;
@@ -62,32 +62,39 @@
             margin-top: 25px;
         }
 
-        
         .job-item, .edu-item {
             background: #f9f9f9;
             padding: 15px 20px;
             margin-bottom: 15px;
             border-radius: 5px;
+            border-left: 3px solid #000;
+        }
+
+        .job-header, .edu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
 
         .job-title, .edu-degree {
             font-weight: bold;
             font-size: 16px;
             color: #000;
+            display: inline;
         }
 
         .company, .school {
-            font-style: normal;
             font-weight: bold;
-            color: #000;
+            color: #333;
             margin-left: 5px;
+            display: inline;
         }
 
         .date {
             font-size: 14px;
-            font-style: italic;
             color: #555;
-            margin-top: 5px;
+            white-space: nowrap;
         }
 
         .job-item p, .edu-item p {
@@ -96,7 +103,6 @@
             color: #333;
         }
 
-       
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -111,18 +117,18 @@
             margin-bottom: 5px;
         }
 
-       
         .footer {
             text-align: center;
             font-size: 12px;
             color: #666;
             margin-top: 40px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-       
         <div class="header">
             <h1>{{ $first_name ?? 'First Name' }} {{ $last_name ?? 'Last Name' }}</h1>
             <p class="profession">{{ $occupation ?? 'Professional' }}</p>
@@ -132,10 +138,10 @@
                 {{ $phone ?? '' }}
                 @if((!empty($email) || !empty($phone)) && !empty($country)) | @endif
                 {{ $country ?? '' }}
+                @if(!empty($nationality)) | {{ $nationality }} @endif
             </div>
         </div>
 
-       
         @if(!empty($summary))
         <div class="section">
             <div class="section-title">Professional Summary</div>
@@ -143,49 +149,58 @@
         </div>
         @endif
 
-       
-        @if(!empty($employment) && count($employment) > 0)
+        @if(!empty($job_title) && count($job_title) > 0)
         <div class="section">
             <div class="section-title">Work Experience</div>
-            @foreach($employment as $job)
+            @foreach($job_title as $index => $title)
             <div class="job-item">
-                <div class="job-title">{{ $job['job_title'] ?? 'Job Title' }}</div>
-                @if(!empty($job['company']))
-                <div class="company">at {{ $job['company'] }}</div>
-                @endif
-                <div class="date">
-                    {{ $job['job_start'] ?? '' }} @if(!empty($job['job_start']) && !empty($job['job_end'])) – @endif {{ $job['job_end'] ?? '' }}
+                <div class="job-header">
+                    <div>
+                        <span class="job-title">{{ $title ?? 'Job Title' }}</span>
+                        @if(!empty($company[$index]))
+                        <span class="company">at {{ $company[$index] }}</span>
+                        @endif
+                    </div>
+                    <div class="date">
+                        {{ $job_start[$index] ?? '' }} 
+                        @if(!empty($job_start[$index]) && !empty($job_end[$index])) – @endif 
+                        {{ $job_end[$index] ?? '' }}
+                    </div>
                 </div>
-                @if(!empty($job['job_description']))
-                <p>{{ $job['job_description'] }}</p>
+                @if(!empty($job_description[$index]))
+                <p>{{ $job_description[$index] }}</p>
                 @endif
             </div>
             @endforeach
         </div>
         @endif
 
-        
-        @if(!empty($education) && count($education) > 0)
+        @if(!empty($degree) && count($degree) > 0)
         <div class="section">
             <div class="section-title">Education</div>
-            @foreach($education as $edu)
+            @foreach($degree as $index => $deg)
             <div class="edu-item">
-                <div class="edu-degree">{{ $edu['degree'] ?? 'Degree' }}</div>
-                @if(!empty($edu['school']))
-                <div class="school">at {{ $edu['school'] }}</div>
-                @endif
-                <div class="date">
-                    {{ $edu['edu_start'] ?? '' }} @if(!empty($edu['edu_start']) && !empty($edu['edu_end'])) – @endif {{ $edu['edu_end'] ?? '' }}
+                <div class="edu-header">
+                    <div>
+                        <span class="edu-degree">{{ $deg ?? 'Degree' }}</span>
+                        @if(!empty($school[$index]))
+                        <span class="school">at {{ $school[$index] }}</span>
+                        @endif
+                    </div>
+                    <div class="date">
+                        {{ $edu_start[$index] ?? '' }} 
+                        @if(!empty($edu_start[$index]) && !empty($edu_end[$index])) – @endif 
+                        {{ $edu_end[$index] ?? '' }}
+                    </div>
                 </div>
-                @if(!empty($edu['edu_description']))
-                <p>{{ $edu['edu_description'] }}</p>
+                @if(!empty($edu_description[$index]))
+                <p>{{ $edu_description[$index] }}</p>
                 @endif
             </div>
             @endforeach
         </div>
         @endif
 
-        
         @if((!empty($skills) && count($skills) > 0) || (!empty($languages) && count($languages) > 0))
         <div class="section">
             <div class="grid-2">
@@ -193,8 +208,8 @@
                 <div>
                     <div class="section-title">Skills</div>
                     <ul>
-                        @foreach($skills as $skill)
-                            <li>{{ $skill }}</li>
+                        @foreach($skills as $index => $skill)
+                            <li>{{ $skill }} @if(!empty($skill_level[$index])) ({{ $skill_level[$index] }}) @endif</li>
                         @endforeach
                     </ul>
                 </div>
@@ -203,8 +218,8 @@
                 <div>
                     <div class="section-title">Languages</div>
                     <ul>
-                        @foreach($languages as $lang)
-                            <li>{{ $lang }}</li>
+                        @foreach($languages as $index => $lang)
+                            <li>{{ $lang }} @if(!empty($language_level[$index])) ({{ $language_level[$index] }}) @endif</li>
                         @endforeach
                     </ul>
                 </div>
@@ -213,7 +228,6 @@
         </div>
         @endif
 
-        
         @if(!empty($hobbies) || !empty($interests))
         <div class="section">
             <div class="section-title">Additional Details</div>
@@ -226,7 +240,18 @@
         </div>
         @endif
 
-       
+        @if(!empty($dob) || !empty($gender))
+        <div class="section">
+            <div class="section-title">Personal Information</div>
+            @if(!empty($dob))
+            <p><strong>Date of Birth:</strong> {{ \Carbon\Carbon::parse($dob)->format('F j, Y') }}</p>
+            @endif
+            @if(!empty($gender))
+            <p><strong>Gender:</strong> {{ $gender }}</p>
+            @endif
+        </div>
+        @endif
+
         <div class="footer">
             Generated on: {{ date('F j, Y') }}
         </div>

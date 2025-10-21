@@ -11,121 +11,60 @@ use App\Models\Skill;
 use App\Models\Language;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class ResumeController extends Controller
 {
-   
     public function index()
     {
         return view('resume');
     }
 
-  
+    public function save(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'first_name' => 'sometimes|string|max:255',
+                'last_name' => 'sometimes|string|max:255',
+                'email' => 'sometimes|email',
+                'phone' => 'sometimes|string',
+            ]);
+
+            session(['resume_draft' => $request->all()]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Draft saved successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to save draft'
+            ], 500);
+        }
+    }
+
     public function download(Request $request)
     {
-        
-        \Log::info('=== RESUME FORM SUBMISSION STARTED ===');
-        \Log::info('Form Data:', $request->all());
+        Log::info('=== RESUME FORM SUBMISSION STARTED ===');
+        Log::info('Form Data:', $request->all());
 
         try {
-            
-            $data = $request->all();
-            
-           
-            $employment = [];
-            if (!empty($data['job_title']) && is_array($data['job_title'])) {
-                foreach ($data['job_title'] as $index => $title) {
-                    
-                    $hasData = !empty(trim($title)) || 
-                               !empty(trim($data['company'][$index] ?? '')) ||
-                               !empty(trim($data['job_start'][$index] ?? '')) ||
-                               !empty(trim($data['job_end'][$index] ?? '')) ||
-                               !empty(trim($data['job_description'][$index] ?? ''));
-                    
-                    if ($hasData) {
-                        $employment[] = [
-                            'job_title' => trim($title) ?? '',
-                            'company' => trim($data['company'][$index] ?? ''),
-                            'job_start' => trim($data['job_start'][$index] ?? ''),
-                            'job_end' => trim($data['job_end'][$index] ?? ''),
-                            'job_description' => trim($data['job_description'][$index] ?? '')
-                        ];
-                    }
-                }
-            }
-            $data['employment'] = $employment;
-            \Log::info('Processed employment records: ' . count($employment));
-
-            
-            $education = [];
-            if (!empty($data['degree']) && is_array($data['degree'])) {
-                foreach ($data['degree'] as $index => $degree) {
-                   
-                    $hasData = !empty(trim($degree)) || 
-                               !empty(trim($data['school'][$index] ?? '')) ||
-                               !empty(trim($data['edu_start'][$index] ?? '')) ||
-                               !empty(trim($data['edu_end'][$index] ?? '')) ||
-                               !empty(trim($data['edu_description'][$index] ?? ''));
-                    
-                    if ($hasData) {
-                        $education[] = [
-                            'degree' => trim($degree) ?? '',
-                            'school' => trim($data['school'][$index] ?? ''),
-                            'edu_start' => trim($data['edu_start'][$index] ?? ''),
-                            'edu_end' => trim($data['edu_end'][$index] ?? ''),
-                            'edu_description' => trim($data['edu_description'][$index] ?? '')
-                        ];
-                    }
-                }
-            }
-            $data['education'] = $education;
-            \Log::info('Processed education records: ' . count($education));
-
-            
-            $skills = [];
-            if (isset($data['skills']) && is_array($data['skills'])) {
-                foreach ($data['skills'] as $skill) {
-                    if (!empty(trim($skill))) {
-                        $skills[] = trim($skill);
-                    }
-                }
-            }
-            $data['skills'] = $skills;
-
-         
-            $languages = [];
-            if (isset($data['languages']) && is_array($data['languages'])) {
-                foreach ($data['languages'] as $lang) {
-                    if (!empty(trim($lang))) {
-                        $languages[] = trim($lang);
-                    }
-                }
-            }
-            $data['languages'] = $languages;
-
-            
-            \Log::info('Starting database save process...');
-            \Log::info('Employment records to save: ' . count($employment));
-            \Log::info('Education records to save: ' . count($education));
-            
             DB::beginTransaction();
+            
             try {
-                \Log::info('Creating resume record...');
-                
-                
+                // Process date of birth
                 $dob = null;
                 if (!empty($request->dob)) {
                     try {
                         $dob = Carbon::createFromFormat('Y-m-d', $request->dob)->format('Y-m-d');
                     } catch (\Exception $e) {
-                        try {
-                            $dob = Carbon::parse($request->dob)->format('Y-m-d');
-                        } catch (\Exception $e) {
-                            $dob = $request->dob;
-                        }
+                        $dob = $request->dob;
                     }
                 }
 
+                // Create resume
                 $resumeData = [
                     'first_name' => $request->first_name ?? 'Unknown',
                     'last_name' => $request->last_name ?? 'Unknown',
@@ -142,153 +81,159 @@ class ResumeController extends Controller
                     'template' => $request->template ?? 'template1',
                 ];
 
-                \Log::info('Resume data to save:', $resumeData);
-
+                Log::info('Creating resume with data:', $resumeData);
                 $resume = Resume::create($resumeData);
-                \Log::info('Resume created successfully with ID: ' . $resume->id);
+                Log::info('✓ Resume created with ID: ' . $resume->id);
 
-                
-                if (!empty($employment)) {
-                    \Log::info('Saving ' . count($employment) . ' employment histories...');
-                    foreach ($employment as $index => $job) {
-                        try {
-                            $jobStart = null;
-                            $jobEnd = null;
-                            
-                            if (!empty($job['job_start'])) {
-                                try {
-                                    $jobStart = Carbon::parse($job['job_start'])->format('Y-m-d');
-                                } catch (\Exception $e) {
-                                    $jobStart = $job['job_start'];
-                                }
-                            }
-                            
-                            if (!empty($job['job_end'])) {
-                                try {
-                                    $jobEnd = Carbon::parse($job['job_end'])->format('Y-m-d');
-                                } catch (\Exception $e) {
-                                    $jobEnd = $job['job_end'];
-                                }
-                            }
+                // Save employment history
+                if ($request->has('job_title')) {
+                    foreach ($request->job_title as $index => $title) {
+                        if (!empty(trim($title))) {
+                            // Convert month format to date format
+                            $jobStart = $this->formatMonthToDate($request->job_start[$index] ?? '');
+                            $jobEnd = $this->formatMonthToDate($request->job_end[$index] ?? '');
                             
                             EmploymentHistory::create([
                                 'resume_id' => $resume->id,
-                                'job_title' => $job['job_title'] ?? '',
-                                'company' => $job['company'] ?? '',
+                                'job_title' => $title,
+                                'company' => $request->company[$index] ?? '',
                                 'job_start' => $jobStart,
                                 'job_end' => $jobEnd,
-                                'job_description' => $job['job_description'] ?? ''
+                                'job_description' => $request->job_description[$index] ?? ''
                             ]);
-                            \Log::info("   Employment {$index}: " . ($job['job_title'] ?? 'No Title'));
-                        } catch (\Exception $e) {
-                            \Log::error("Failed to save employment {$index}: " . $e->getMessage());
-                            
                         }
                     }
+                    Log::info('✓ Employment records created');
                 }
 
-                
-                if (!empty($education)) {
-                    \Log::info('Saving ' . count($education) . ' education records...');
-                    foreach ($education as $index => $edu) {
-                        try {
-                            $eduStart = null;
-                            $eduEnd = null;
-                            
-                            if (!empty($edu['edu_start'])) {
-                                try {
-                                    $eduStart = Carbon::parse($edu['edu_start'])->format('Y-m-d');
-                                } catch (\Exception $e) {
-                                    $eduStart = $edu['edu_start'];
-                                }
-                            }
-                            
-                            if (!empty($edu['edu_end'])) {
-                                try {
-                                    $eduEnd = Carbon::parse($edu['edu_end'])->format('Y-m-d');
-                                } catch (\Exception $e) {
-                                    $eduEnd = $edu['edu_end'];
-                                }
-                            }
+                // Save education
+                if ($request->has('degree')) {
+                    foreach ($request->degree as $index => $degree) {
+                        if (!empty(trim($degree))) {
+                            // Convert month format to date format
+                            $eduStart = $this->formatMonthToDate($request->edu_start[$index] ?? '');
+                            $eduEnd = $this->formatMonthToDate($request->edu_end[$index] ?? '');
                             
                             Education::create([
                                 'resume_id' => $resume->id,
-                                'degree' => $edu['degree'] ?? '',
-                                'school' => $edu['school'] ?? '',
+                                'degree' => $degree,
+                                'school' => $request->school[$index] ?? '',
                                 'edu_start' => $eduStart,
                                 'edu_end' => $eduEnd,
-                                'edu_description' => $edu['edu_description'] ?? ''
+                                'edu_description' => $request->edu_description[$index] ?? ''
                             ]);
-                            \Log::info("  Education {$index}: " . ($edu['degree'] ?? 'No Degree'));
-                        } catch (\Exception $e) {
-                            \Log::error("Failed to save education {$index}: " . $e->getMessage());
-                           
                         }
                     }
+                    Log::info('✓ Education records created');
                 }
 
-               
-                if (!empty($skills)) {
-                    \Log::info('Saving ' . count($skills) . ' skills...');
-                    foreach ($skills as $skill) {
-                        try {
+                // Save skills
+                if ($request->has('skills')) {
+                    foreach ($request->skills as $index => $skill) {
+                        if (!empty(trim($skill))) {
                             Skill::create([
                                 'resume_id' => $resume->id,
-                                'skill' => $skill
+                                'skill' => $skill,
+                                'skill_level' => $request->skill_level[$index] ?? null,
                             ]);
-                        } catch (\Exception $e) {
-                            \Log::error("Failed to save skill {$skill}: " . $e->getMessage());
                         }
                     }
-                    \Log::info('   Skills saved: ' . implode(', ', $skills));
+                    Log::info('✓ Skill records created');
                 }
 
-                
-                if (!empty($languages)) {
-                    \Log::info('Saving ' . count($languages) . ' languages...');
-                    foreach ($languages as $lang) {
-                        try {
+                // Save languages
+                if ($request->has('languages')) {
+                    foreach ($request->languages as $index => $language) {
+                        if (!empty(trim($language))) {
                             Language::create([
                                 'resume_id' => $resume->id,
-                                'language' => $lang
+                                'language' => $language,
+                                'language_level' => $request->language_level[$index] ?? null,
                             ]);
-                        } catch (\Exception $e) {
-                            \Log::error("Failed to save language {$lang}: " . $e->getMessage());
                         }
                     }
-                    \Log::info('  Languages saved: ' . implode(', ', $languages));
+                    Log::info('✓ Language records created');
                 }
 
                 DB::commit();
-                \Log::info('✓ Database transaction committed successfully!');
-                \Log::info('=== RESUME SAVED TO DATABASE SUCCESSFULLY ===');
+                Log::info('✓ Database transaction committed successfully!');
+
+                // Prepare data for PDF
+                $data = $this->prepareDataForPdf($resume);
+
+                // Generate PDF
+                $template = $request->input('template', 'template1');
+                Log::info('Generating PDF with template: ' . $template);
+                
+                // Check if template exists
+                if (!view()->exists("templates.{$template}")) {
+                    throw new \Exception("Template '{$template}' not found");
+                }
+                
+                $pdf = Pdf::loadView("templates.{$template}", $data);
+                $pdf->setPaper('A4', 'portrait');
+                
+                Log::info('PDF generated successfully, initiating download...');
+                
+                // Return PDF download
+                return $pdf->download("resume-{$resume->id}.pdf");
 
             } catch (\Exception $e) {
                 DB::rollBack();
-                \Log::error(' DATABASE SAVE FAILED: ' . $e->getMessage());
-                \Log::error('Error Location: ' . $e->getFile() . ':' . $e->getLine());
-                \Log::error('Stack Trace: ' . $e->getTraceAsString());
-                
+                Log::error('DATABASE SAVE FAILED: ' . $e->getMessage());
+                Log::error('Stack trace: ' . $e->getTraceAsString());
+                throw $e;
             }
 
-            
-            $template = $request->input('template', 'template1');
-            
-           
-            \Log::info('Generating PDF with template: ' . $template);
-            $pdf = Pdf::loadView("templates.$template", $data);
-            
-           
-            $pdf->setPaper('A4', 'portrait');
-            
-            
-            \Log::info('PDF generated successfully, initiating download...');
-            return $pdf->download('resume.pdf');
-
         } catch (\Exception $e) {
-            \Log::error(' PDF GENERATION FAILED: ' . $e->getMessage());
-            \Log::error('Full error trace: ' . $e->getTraceAsString());
-            return back()->with('error', 'PDF generation failed: ' . $e->getMessage());
+            Log::error('PDF GENERATION FAILED: ' . $e->getMessage());
+            return back()->with('error', 'Failed to generate PDF: ' . $e->getMessage());
+        }
+    }
+
+    private function prepareDataForPdf(Resume $resume)
+    {
+        return [
+            'first_name' => $resume->first_name,
+            'last_name' => $resume->last_name,
+            'email' => $resume->email,
+            'phone' => $resume->phone,
+            'occupation' => $resume->occupation,
+            'country' => $resume->country,
+            'dob' => $resume->dob ? Carbon::parse($resume->dob)->format('F j, Y') : null,
+            'nationality' => $resume->nationality,
+            'gender' => $resume->gender,
+            'hobbies' => $resume->hobbies,
+            'interests' => $resume->interests,
+            'summary' => $resume->summary,
+            'job_title' => $resume->employmentHistories->pluck('job_title')->toArray(),
+            'company' => $resume->employmentHistories->pluck('company')->toArray(),
+            'job_start' => $resume->employmentHistories->pluck('job_start')->toArray(),
+            'job_end' => $resume->employmentHistories->pluck('job_end')->toArray(),
+            'job_description' => $resume->employmentHistories->pluck('job_description')->toArray(),
+            'degree' => $resume->educations->pluck('degree')->toArray(),
+            'school' => $resume->educations->pluck('school')->toArray(),
+            'edu_start' => $resume->educations->pluck('edu_start')->toArray(),
+            'edu_end' => $resume->educations->pluck('edu_end')->toArray(),
+            'edu_description' => $resume->educations->pluck('edu_description')->toArray(),
+            'skills' => $resume->skills->pluck('skill')->toArray(),
+            'skill_level' => $resume->skills->pluck('skill_level')->toArray(),
+            'languages' => $resume->languages->pluck('language')->toArray(),
+            'language_level' => $resume->languages->pluck('language_level')->toArray(),
+        ];
+    }
+
+    private function formatMonthToDate($monthValue)
+    {
+        if (empty($monthValue)) {
+            return null;
+        }
+        
+        try {
+            // Convert "YYYY-MM" to "YYYY-MM-01" (first day of month)
+            return Carbon::createFromFormat('Y-m', $monthValue)->format('Y-m-d');
+        } catch (\Exception $e) {
+            return $monthValue;
         }
     }
 }

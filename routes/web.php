@@ -9,3 +9,4 @@ Route::get('/', function () {
 
 Route::get('/resume', [ResumeController::class, 'index'])->name('resume.index');
 Route::post('/resume/download', [ResumeController::class, 'download'])->name('resume.download');
+Route::post('/resume/save', [ResumeController::class, 'save'])->name('resume.save');

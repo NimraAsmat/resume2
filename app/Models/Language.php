@@ -12,6 +12,7 @@ class Language extends Model
     protected $fillable = [
         'resume_id',
         'language',
+        'language_level',
     ];
 
     public function resume()

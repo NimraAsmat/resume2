@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('resume_id')->constrained('resumes')->onDelete('cascade');
             $table->string('skill', 100);
+            $table->enum('skill_level', ['Expert', 'Advanced', 'Intermediate', 'Beginner'])->nullable();
             $table->timestamps();
         });
     }
