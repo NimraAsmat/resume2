@@ -34,8 +34,8 @@
             font-size: 20px;
             border-bottom: 1px solid #2563eb;
             padding-bottom: 5px;
-            margin-top: 20px; /* Reduced from 25px */
-            margin-bottom: 12px; /* Added for better spacing */
+            margin-top: 20px; 
+            margin-bottom: 12px; 
         }
 
         p, li {
@@ -46,7 +46,7 @@
             background: #ffffff;
             padding: 15px 20px;
             border-radius: 5px;
-            margin-bottom: 25px; /* Reduced from 30px */
+            margin-bottom: 25px; 
         }
 
         .contact-info ul {
@@ -60,18 +60,18 @@
         }
 
         .section {
-            margin-bottom: 15px; /* Reduced from 20px */
+            margin-bottom: 15px; 
         }
 
         .job-item, .edu-item {
-            margin-bottom: 15px; /* Reduced from 20px */
-            padding-bottom: 12px; /* Reduced from 15px */
-            /* border-bottom removed */
+            margin-bottom: 15px; 
+            padding-bottom: 12px; 
+            
         }
 
         .job-header, .edu-header {
             display: block;
-            margin-bottom: 6px; /* Reduced from 8px */
+            margin-bottom: 6px; 
         }
 
         .job-title, .edu-degree {
@@ -91,22 +91,22 @@
             color: #6b7280;
             font-size: 14px;
             font-style: italic;
-            margin-top: 3px; /* Reduced from 5px */
+            margin-top: 5px; 
         }
 
         .job-description, .edu-description {
-            margin-top: 8px; /* Reduced from 10px */
+            margin-top: 8px; 
             color: #374151;
         }
 
         ul.skills, ul.languages {
             padding-left: 20px;
             list-style-type: disc;
-            margin-top: 8px; /* Added for better spacing */
+            margin-top: 8px; 
         }
 
         .footer {
-            margin-top: 30px; /* Reduced from 40px */
+            margin-top: 30px; 
             color: #666;
             font-size: 12px;
             text-align: center;

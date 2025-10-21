@@ -54,7 +54,7 @@ class ResumeController extends Controller
             DB::beginTransaction();
             
             try {
-                // Process date of birth
+                
                 $dob = null;
                 if (!empty($request->dob)) {
                     try {
@@ -64,7 +64,7 @@ class ResumeController extends Controller
                     }
                 }
 
-                // Create resume
+               
                 $resumeData = [
                     'first_name' => $request->first_name ?? 'Unknown',
                     'last_name' => $request->last_name ?? 'Unknown',
@@ -83,13 +83,13 @@ class ResumeController extends Controller
 
                 Log::info('Creating resume with data:', $resumeData);
                 $resume = Resume::create($resumeData);
-                Log::info('✓ Resume created with ID: ' . $resume->id);
+                Log::info('Resume created with ID: ' . $resume->id);
 
-                // Save employment history
+                
                 if ($request->has('job_title')) {
                     foreach ($request->job_title as $index => $title) {
                         if (!empty(trim($title))) {
-                            // Convert month format to date format
+                            
                             $jobStart = $this->formatMonthToDate($request->job_start[$index] ?? '');
                             $jobEnd = $this->formatMonthToDate($request->job_end[$index] ?? '');
                             
@@ -103,14 +103,14 @@ class ResumeController extends Controller
                             ]);
                         }
                     }
-                    Log::info('✓ Employment records created');
+                    Log::info('Employment records created');
                 }
 
-                // Save education
+                
                 if ($request->has('degree')) {
                     foreach ($request->degree as $index => $degree) {
                         if (!empty(trim($degree))) {
-                            // Convert month format to date format
+                           
                             $eduStart = $this->formatMonthToDate($request->edu_start[$index] ?? '');
                             $eduEnd = $this->formatMonthToDate($request->edu_end[$index] ?? '');
                             
@@ -124,10 +124,10 @@ class ResumeController extends Controller
                             ]);
                         }
                     }
-                    Log::info('✓ Education records created');
+                    Log::info('Education records created');
                 }
 
-                // Save skills
+                
                 if ($request->has('skills')) {
                     foreach ($request->skills as $index => $skill) {
                         if (!empty(trim($skill))) {
@@ -138,10 +138,10 @@ class ResumeController extends Controller
                             ]);
                         }
                     }
-                    Log::info('✓ Skill records created');
+                    Log::info('Skill records created');
                 }
 
-                // Save languages
+                
                 if ($request->has('languages')) {
                     foreach ($request->languages as $index => $language) {
                         if (!empty(trim($language))) {
@@ -152,20 +152,20 @@ class ResumeController extends Controller
                             ]);
                         }
                     }
-                    Log::info('✓ Language records created');
+                    Log::info('Language records created');
                 }
 
                 DB::commit();
-                Log::info('✓ Database transaction committed successfully!');
+                Log::info('Database transaction committed successfully!');
 
-                // Prepare data for PDF
+               
                 $data = $this->prepareDataForPdf($resume);
 
-                // Generate PDF
+                
                 $template = $request->input('template', 'template1');
                 Log::info('Generating PDF with template: ' . $template);
                 
-                // Check if template exists
+               
                 if (!view()->exists("templates.{$template}")) {
                     throw new \Exception("Template '{$template}' not found");
                 }
@@ -175,7 +175,7 @@ class ResumeController extends Controller
                 
                 Log::info('PDF generated successfully, initiating download...');
                 
-                // Return PDF download
+              
                 return $pdf->download("resume-{$resume->id}.pdf");
 
             } catch (\Exception $e) {
@@ -230,7 +230,7 @@ class ResumeController extends Controller
         }
         
         try {
-            // Convert "YYYY-MM" to "YYYY-MM-01" (first day of month)
+ 
             return Carbon::createFromFormat('Y-m', $monthValue)->format('Y-m-d');
         } catch (\Exception $e) {
             return $monthValue;

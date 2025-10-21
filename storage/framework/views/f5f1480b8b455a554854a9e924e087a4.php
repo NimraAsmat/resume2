@@ -12,7 +12,7 @@
       width: 100% !important;
     }
     .iti__selected-flag {
-       background-color: #dbeafe !important; /* blue-50 */
+       background-color: #dbeafe !important; 
       border-radius: 0.25rem 0 0 0.25rem !important;
     }
  .iti__country-list {
@@ -23,7 +23,7 @@
 <body class="bg-gray-100 font-sans">
   <main class="max-w-4xl mx-auto mt-8 bg-white shadow-lg p-6">
 
-    <!-- Progress Bar -->
+    
     <div class="mb-6">
       <h2 class="text-lg font-semibold mb-2">Resume Progress</h2>
       <div class="w-full bg-gray-200 h-1.5">
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <!-- Success/Error Messages -->
+   
     <div id="messageContainer" class="hidden mb-4 p-4 rounded-lg"></div>
 
     <form method="POST" action="<?php echo e(route('resume.download')); ?>" id="resumeForm">
@@ -43,7 +43,7 @@
       <input type="hidden" name="template" id="selectedTemplate" value="template1">
       <input type="hidden" name="phone" id="fullPhone">
 
-      <!-- Personal Details -->
+    
       <section class="space-y-4">
         <h3 class="text-xl font-semibold pb-1">Personal Details</h3>
         <p class="text-gray-600 text-sm">Enter your basic personal information, such as your name, contact details, and nationality.</p>
@@ -112,7 +112,7 @@
         </div>
       </section>
 
-      <!-- Additional Details -->
+     
       <section id="additionalDetails" class="space-y-4 mt-6 hidden">
         <h3 class="text-xl font-semibold pb-1">Additional Details</h3>
         <p class="text-gray-600 text-sm">Include hobbies, interests, or personal achievements.</p>
@@ -132,7 +132,7 @@
         </button>
       </div>
 
-      <!-- Professional Summary -->
+     
       <section class="space-y-3">
         <h3 class="text-xl font-semibold pb-1">Professional Summary</h3>
         <p class="text-gray-600 text-sm">Provide a brief overview of your professional background and career objectives.</p>
@@ -141,7 +141,7 @@
         </div>
       </section>
 
-      <!-- Employment History -->
+      
       <section class="mt-6 space-y-2">
         <h3 class="text-xl font-semibold pb-1">Employment History</h3>
         <p class="text-gray-600 text-sm">List your previous jobs in reverse chronological order.</p>
@@ -153,7 +153,7 @@
         </div>
       </section>
 
-      <!-- Education -->
+     
       <section class="mt-6 space-y-2">
         <h3 class="text-xl font-semibold pb-1">Education</h3>
         <p class="text-gray-600 text-sm">Enter your academic qualifications and institutions.</p>
@@ -165,7 +165,7 @@
         </div>
       </section>
 
-      <!-- Languages -->
+   
       <section class="mt-6 space-y-2">
         <h3 class="text-xl font-semibold pb-1">Languages</h3>
         <p class="text-gray-600 text-sm">Select the languages you know and your proficiency level.</p>
@@ -177,7 +177,7 @@
         </div>
       </section>
 
-      <!-- Skills -->
+   
       <section class="mt-6 space-y-2">
         <h3 class="text-xl font-semibold pb-1">Skills</h3>
         <p class="text-gray-600 text-sm">Include key skills, technical abilities, and tools you are proficient in.</p>
@@ -189,7 +189,7 @@
         </div>
       </section>
 
-      <!-- Action Buttons -->
+    
       <div class="text-center mt-8 flex justify-center gap-4 flex-wrap">
         <button type="button" onclick="saveDraft()" class="px-6 py-3 font-bold text-blue-600 border border-blue-600 bg-white rounded hover:bg-blue-50 transition duration-200">
           Save Draft
@@ -216,7 +216,7 @@
   <script>
     let phoneInput;
     
-    // Initialize phone input
+ 
     document.addEventListener('DOMContentLoaded', function() {
       phoneInput = window.intlTelInput(document.querySelector("#phone"), {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
@@ -231,14 +231,14 @@
         }
       });
 
-      // Update hidden phone field with full number
+     
       document.getElementById('phone').addEventListener('input', function() {
         if (phoneInput.isValidNumber()) {
           document.getElementById('fullPhone').value = phoneInput.getNumber();
         }
       });
 
-      // Initialize form with first employment and education entries
+    
       addEmployment();
       addEducation();
       addLanguage();
@@ -297,7 +297,7 @@
       document.getElementById('progressBar').style.width = percent + '%';
       document.getElementById('progressText').innerText = percent + '% Complete';
       
-      // Update progress bar color based on completion
+    
       if (percent < 30) {
         document.getElementById('progressBar').classList.remove('bg-yellow-500', 'bg-green-500');
         document.getElementById('progressBar').classList.add('bg-red-500');
@@ -510,14 +510,14 @@
       container.innerHTML = message;
       container.classList.remove('hidden');
       
-      // Auto-hide after 5 seconds
+     
       setTimeout(() => {
         container.classList.add('hidden');
       }, 5000);
     }
 
     function saveDraft() {
-      // Simple client-side draft saving
+     
       const formData = new FormData(document.getElementById('resumeForm'));
       const data = Object.fromEntries(formData);
       
@@ -529,20 +529,20 @@
       const draft = localStorage.getItem('resumeDraft');
       if (draft) {
         if (confirm('Would you like to load your saved draft?')) {
-          // Implement draft loading logic here
+         
           showMessage('Draft loaded successfully!', 'success');
         }
       }
     }
 
     function validateForm() {
-      // Phone validation
+    
       if (!phoneInput.isValidNumber()) {
         showMessage('Please enter a valid phone number.', 'error');
         return;
       }
 
-      // Required fields validation
+     
       const requiredFields = document.querySelectorAll('.required-field');
       let allFilled = true;
       let emptyFields = [];
@@ -564,7 +564,6 @@
         return;
       }
 
-      // Update phone number before submission
       document.getElementById('fullPhone').value = phoneInput.getNumber();
       
       showMessage('Generating your resume PDF...', 'info');

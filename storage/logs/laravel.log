@@ -4948,3 +4948,14 @@ Provide a brief overview of your professional background, expertise, and career 
 [2025-10-21 10:48:49] local.INFO: ✓ Database transaction committed successfully!  
 [2025-10-21 10:48:49] local.INFO: Generating PDF with template: template1  
 [2025-10-21 10:48:49] local.INFO: PDF generated successfully, initiating download...  
+[2025-10-21 11:25:28] local.INFO: === RESUME FORM SUBMISSION STARTED ===  
+[2025-10-21 11:25:28] local.INFO: Form Data: {"_token":"73FAYB9nZYPqYuzQwv8lxxyDRQCDlTdRjBZekZnw","template":"template1","phone":"+923090458175","first_name":"rukaya","last_name":"aman","email":"info@gmail.com","occupation":"web develpoer","country":"Andorra","dob":"2025-10-24","nationality":"Andorran","gender":"Female","hobbies":"Travelling","interests":"Environment","summary":"Provide a brief overview of your professional background and career objectives.Provide a brief overview of your professional background and career objectives.Provide a brief overview of your professional background and career objectives.","job_title":["hacker"],"company":["helix"],"job_start":["2025-04"],"job_end":["2025-08"],"job_description":["Provide a brief overview of your professional background and career objectives.Provide a brief overview of your professional background and career objectives."],"degree":["IT"],"school":["Punjab university"],"edu_start":["2025-04"],"edu_end":["2025-07"],"edu_description":["Provide a brief overview of your professional background and career objectives.Provide a brief overview of your professional background and career objectives."],"languages":["Armenian"],"language_level":["Fluent"],"skills":["phythone"],"skill_level":["Expert"]} 
+[2025-10-21 11:25:28] local.INFO: Creating resume with data: {"first_name":"rukaya","last_name":"aman","email":"info@gmail.com","phone":"+923090458175","occupation":"web develpoer","country":"Andorra","nationality":"Andorran","dob":"2025-10-24","gender":"Female","summary":"Provide a brief overview of your professional background and career objectives.Provide a brief overview of your professional background and career objectives.Provide a brief overview of your professional background and career objectives.","hobbies":"Travelling","interests":"Environment","template":"template1"} 
+[2025-10-21 11:25:28] local.INFO: Resume created with ID: 8  
+[2025-10-21 11:25:28] local.INFO: Employment records created  
+[2025-10-21 11:25:28] local.INFO: Education records created  
+[2025-10-21 11:25:28] local.INFO: Skill records created  
+[2025-10-21 11:25:28] local.INFO: Language records created  
+[2025-10-21 11:25:28] local.INFO: Database transaction committed successfully!  
+[2025-10-21 11:25:28] local.INFO: Generating PDF with template: template1  
+[2025-10-21 11:25:29] local.INFO: PDF generated successfully, initiating download...  
