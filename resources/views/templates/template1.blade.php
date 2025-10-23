@@ -4,121 +4,144 @@
     <meta charset="utf-8">
     <title>Resume - {{ $first_name ?? '' }} {{ $last_name ?? '' }}</title>
     <style>
-        body { 
-            font-family: 'Times New Roman', Times, serif; 
-            line-height: 1.6; 
-            color: #000; 
-            padding: 40px;
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.3;
+            color: #000;
+            padding: 10px;
             margin: 0;
-            background: #fff; 
+            background: #fff;
+            font-size: 12px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 8.5in;
             margin: 0 auto;
-            background: #fff; 
-            padding: 40px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            background: #fff;
+            padding: 15px;
         }
 
-        h1 { 
-            color: #2563eb; 
-            font-size: 36px;
-            margin-bottom: 15px;
+        h1 {
+            color: #2563eb;
+            font-size: 20px;
+            margin-bottom: 4px;
             border-bottom: 2px solid #2563eb;
-            padding-bottom: 10px;
+            padding-bottom: 2px;
         }
 
         h3 {
-            color: #2563eb; 
-            font-size: 20px;
+            color: #2563eb;
+            font-size: 14px;
             border-bottom: 1px solid #2563eb;
+            padding-bottom: 2px;
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+
+        .section {
+            margin-bottom: 6px;
+        }
+
+        .job-item, .edu-item {
+            margin-bottom: 6px;
             padding-bottom: 5px;
-            margin-top: 20px; 
-            margin-bottom: 12px; 
+            page-break-inside: avoid;
         }
 
         p, li {
-            font-size: 16px;
+            font-size: 12px;
+            margin: 2px 0;
         }
 
         .contact-info {
-            background: #ffffff;
-            padding: 15px 20px;
-            border-radius: 5px;
-            margin-bottom: 25px; 
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 8px;
         }
 
         .contact-info ul {
             list-style-type: disc;
-            padding-left: 20px;
+            padding-left: 16px;
             margin: 0;
         }
 
         .contact-info li {
-            margin-bottom: 8px;
-        }
-
-        .section {
-            margin-bottom: 15px; 
-        }
-
-        .job-item, .edu-item {
-            margin-bottom: 15px; 
-            padding-bottom: 12px; 
-            
+            margin-bottom: 2px;
         }
 
         .job-header, .edu-header {
-            display: block;
-            margin-bottom: 6px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 2px;
         }
 
         .job-title, .edu-degree {
             font-weight: bold;
             color: #1e40af;
-            font-size: 18px;
+            font-size: 13px;
         }
 
         .company, .school {
             font-style: italic;
             color: #4b5563;
-            font-size: 16px;
+            font-size: 11px;
             margin-left: 5px;
         }
 
         .date {
             color: #6b7280;
-            font-size: 14px;
+            font-size: 10px;
             font-style: italic;
-            margin-top: 5px; 
         }
 
         .job-description, .edu-description {
-            margin-top: 8px; 
+            margin-top: 2px;
             color: #374151;
         }
 
         ul.skills, ul.languages {
-            padding-left: 20px;
+            padding-left: 16px;
             list-style-type: disc;
-            margin-top: 8px; 
+            margin-top: 2px;
+            columns: 2;
+            column-gap: 10px;
+        }
+
+        ul.skills li, ul.languages li {
+            break-inside: avoid;
+            margin-bottom: 2px;
         }
 
         .footer {
-            margin-top: 30px; 
+            margin-top: 10px;
             color: #666;
-            font-size: 12px;
+            font-size: 10px;
             text-align: center;
             border-top: 1px solid #e5e7eb;
-            padding-top: 15px;
+            padding-top: 5px;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+                box-shadow: none;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 10px;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>{{ $first_name ?? 'First Name' }} {{ $last_name ?? 'Last Name' }}</h1>
-        
+
         <div class="contact-info">
             <ul>
                 <li><strong>Email:</strong> {{ $email ?? 'N/A' }}</li>
@@ -157,8 +180,8 @@
                         <span class="company">at {{ $company[$index] ?? '' }}</span>
                     </div>
                     <div class="date">
-                        {{ $job_start[$index] ?? '' }} 
-                        @if(!empty($job_start[$index]) && !empty($job_end[$index])) - @endif 
+                        {{ $job_start[$index] ?? '' }}
+                        @if(!empty($job_start[$index]) && !empty($job_end[$index])) - @endif
                         {{ $job_end[$index] ?? '' }}
                     </div>
                 </div>
@@ -181,8 +204,8 @@
                         <span class="school">at {{ $school[$index] ?? '' }}</span>
                     </div>
                     <div class="date">
-                        {{ $edu_start[$index] ?? '' }} 
-                        @if(!empty($edu_start[$index]) && !empty($edu_end[$index])) - @endif 
+                        {{ $edu_start[$index] ?? '' }}
+                        @if(!empty($edu_start[$index]) && !empty($edu_end[$index])) - @endif
                         {{ $edu_end[$index] ?? '' }}
                     </div>
                 </div>

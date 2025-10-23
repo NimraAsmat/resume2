@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -8,17 +9,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('skills', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('resume_id')->constrained('resumes')->onDelete('cascade');
-            $table->string('skill', 100);
-            $table->enum('skill_level', ['Expert', 'Advanced', 'Intermediate', 'Beginner'])->nullable();
+            $table->string('language', 100);
+            $table->enum('language_level', ['Native', 'Fluent', 'Advanced', 'Intermediate', 'Basic'])->nullable();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('skills');
+        Schema::dropIfExists('languages');
     }
 };

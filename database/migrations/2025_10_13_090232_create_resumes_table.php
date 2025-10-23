@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -10,6 +11,7 @@ return new class extends Migration
     {
         Schema::create('resumes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('template_id')->constrained('templates')->onDelete('cascade');
             $table->string('first_name', 100);
             $table->string('last_name', 100);
             $table->string('email', 150)->nullable();
@@ -22,7 +24,6 @@ return new class extends Migration
             $table->text('summary')->nullable();
             $table->text('hobbies')->nullable();
             $table->text('interests')->nullable();
-            $table->string('template', 50)->default('template1');
             $table->timestamps();
         });
     }

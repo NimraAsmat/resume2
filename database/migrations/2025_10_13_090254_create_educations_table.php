@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -8,20 +9,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('employment_histories', function (Blueprint $table) {
+        Schema::create('educations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('resume_id')->constrained('resumes')->onDelete('cascade');
-            $table->string('job_title', 150)->nullable();
-            $table->string('company', 150)->nullable();
-            $table->date('job_start')->nullable();
-            $table->date('job_end')->nullable();
-            $table->text('job_description')->nullable();
+            $table->string('degree', 150)->nullable();
+            $table->string('school', 150)->nullable();
+            $table->date('edu_start')->nullable();
+            $table->date('edu_end')->nullable();
+            $table->text('edu_description')->nullable();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('employment_histories');
+        Schema::dropIfExists('educations');
     }
 };

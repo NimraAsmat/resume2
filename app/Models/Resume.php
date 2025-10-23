@@ -10,6 +10,7 @@ class Resume extends Model
     use HasFactory;
 
     protected $fillable = [
+        'template_id',
         'first_name',
         'last_name',
         'email',
@@ -22,10 +23,14 @@ class Resume extends Model
         'summary',
         'hobbies',
         'interests',
-        'template',
     ];
 
-    // Relationships
+  
+    public function template()
+    {
+        return $this->belongsTo(Template::class);
+    }
+
     public function employmentHistories()
     {
         return $this->hasMany(EmploymentHistory::class);

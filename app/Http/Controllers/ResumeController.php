@@ -9,6 +9,7 @@ use App\Models\Education;
 use App\Models\EmploymentHistory;
 use App\Models\Skill;
 use App\Models\Language;
+use App\Models\Template;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -20,14 +21,12 @@ class ResumeController extends Controller
         return view('resume');
     }
 
-    
     public function preview(Request $request)
     {
         try {
             $data = $this->preparePreviewData($request->all());
             $template = $request->input('template', 'template1');
             
-           
             if (!view()->exists("templates.{$template}")) {
                 return response()->json(['error' => 'Template not found'], 404);
             }
@@ -41,10 +40,8 @@ class ResumeController extends Controller
 
     private function preparePreviewData($formData)
     {
-       
         Log::info('Form Data Received:', $formData);
 
-       
         $dob = null;
         if (!empty($formData['dob'])) {
             try {
@@ -54,7 +51,6 @@ class ResumeController extends Controller
             }
         }
 
-        
         $employmentData = [];
         if (isset($formData['job_title']) && is_array($formData['job_title'])) {
             foreach ($formData['job_title'] as $index => $title) {
@@ -89,7 +85,6 @@ class ResumeController extends Controller
             }
         }
 
-        
         $educationData = [];
         if (isset($formData['degree']) && is_array($formData['degree'])) {
             foreach ($formData['degree'] as $index => $degree) {
@@ -124,7 +119,6 @@ class ResumeController extends Controller
             }
         }
 
-        
         $skillsData = [];
         if (isset($formData['skills']) && is_array($formData['skills'])) {
             foreach ($formData['skills'] as $index => $skill) {
@@ -137,7 +131,6 @@ class ResumeController extends Controller
             }
         }
 
-        
         $languagesData = [];
         if (isset($formData['languages']) && is_array($formData['languages'])) {
             foreach ($formData['languages'] as $index => $language) {
@@ -150,7 +143,6 @@ class ResumeController extends Controller
             }
         }
 
-       
         return [
             'first_name' => $formData['first_name'] ?? '',
             'last_name' => $formData['last_name'] ?? '',
@@ -165,7 +157,6 @@ class ResumeController extends Controller
             'interests' => $formData['interests'] ?? '',
             'summary' => $formData['summary'] ?? '',
             
-           
             'job_title' => $formData['job_title'] ?? [],
             'company' => $formData['company'] ?? [],
             'job_start' => $formData['job_start'] ?? [],
@@ -182,7 +173,6 @@ class ResumeController extends Controller
             'skill_level' => $formData['skill_level'] ?? [],
             'languages' => $formData['languages'] ?? [],
             'language_level' => $formData['language_level'] ?? [],
-            
             
             'employment_data' => $employmentData,
             'education_data' => $educationData,
@@ -201,13 +191,10 @@ class ResumeController extends Controller
                 'phone' => 'sometimes|string',
             ]);
 
-            
             $allData = $request->all();
             
-           
             session(['resume_draft' => $allData]);
             
-           
             return response()->json([
                 'success' => true,
                 'message' => 'Draft saved successfully',
@@ -234,6 +221,16 @@ class ResumeController extends Controller
             
             try {
                 
+                $selectedTemplate = $request->template ?? 'template1';
+                
+               
+                $template = Template::where('view_name', $selectedTemplate)->first();
+                
+                if (!$template) {
+                    throw new \Exception("Template '{$selectedTemplate}' not found in database");
+                }
+
+               
                 $dob = null;
                 if (!empty($request->dob)) {
                     try {
@@ -243,8 +240,9 @@ class ResumeController extends Controller
                     }
                 }
 
-               
+                
                 $resumeData = [
+                    'template_id' => $template->id,
                     'first_name' => $request->first_name ?? 'Unknown',
                     'last_name' => $request->last_name ?? 'Unknown',
                     'email' => $request->email ?? null,
@@ -257,7 +255,6 @@ class ResumeController extends Controller
                     'summary' => $request->summary ?? null,
                     'hobbies' => $request->hobbies ?? null,
                     'interests' => $request->interests ?? null,
-                    'template' => $request->template ?? 'template1',
                 ];
 
                 Log::info('Creating resume with data:', $resumeData);
@@ -320,7 +317,7 @@ class ResumeController extends Controller
                     Log::info('Skill records created: ' . count($request->skills));
                 }
 
-                
+              
                 if ($request->has('languages') && is_array($request->languages)) {
                     foreach ($request->languages as $index => $language) {
                         if (!empty(trim($language))) {
@@ -337,24 +334,23 @@ class ResumeController extends Controller
                 DB::commit();
                 Log::info('Database transaction committed successfully!');
 
-               
+                
                 $data = $this->prepareDataForPdf($resume);
+                $data['template'] = $template; 
 
                 
-                $template = $request->input('template', 'template1');
-                Log::info('Generating PDF with template: ' . $template);
+                Log::info('Generating PDF with template: ' . $selectedTemplate);
                 
-               
-                if (!view()->exists("templates.{$template}")) {
-                    throw new \Exception("Template '{$template}' not found");
+                if (!view()->exists("templates.{$selectedTemplate}")) {
+                    throw new \Exception("Template view '{$selectedTemplate}' not found");
                 }
                 
-                $pdf = Pdf::loadView("templates.{$template}", $data);
+                $pdf = Pdf::loadView("templates.{$selectedTemplate}", $data);
                 $pdf->setPaper('A4', 'portrait');
                 
                 Log::info('PDF generated successfully, initiating download...');
                 
-                
+               
                 session()->forget('resume_draft');
               
                 return $pdf->download("resume-{$resume->id}.pdf");
@@ -374,7 +370,6 @@ class ResumeController extends Controller
 
     private function prepareDataForPdf(Resume $resume)
     {
-      
         $jobStarts = [];
         $jobEnds = [];
         foreach ($resume->employmentHistories as $job) {
@@ -451,7 +446,6 @@ class ResumeController extends Controller
             'languages' => $resume->languages->pluck('language')->toArray(),
             'language_level' => $resume->languages->pluck('language_level')->toArray(),
             
-          
             'employment_data' => $resume->employmentHistories->map(function($job) {
                 return [
                     'job_title' => $job->job_title,
@@ -485,6 +479,8 @@ class ResumeController extends Controller
                     'language_level' => $language->language_level
                 ];
             })->toArray(),
+            
+            'template' => $resume->template,
         ];
     }
 
@@ -501,7 +497,6 @@ class ResumeController extends Controller
         }
     }
 
-   
     public function getDraft()
     {
         $draft = session('resume_draft');
@@ -511,6 +506,12 @@ class ResumeController extends Controller
         ]);
     }
 
+    public function getTemplates()
+    {
+        $templates = Template::active()->ordered()->get();
+        
+        return response()->json($templates);
+    }
     
     public function testPreview(Request $request)
     {

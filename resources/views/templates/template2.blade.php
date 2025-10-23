@@ -4,128 +4,137 @@
     <meta charset="utf-8">
     <title>Resume - {{ $first_name ?? '' }} {{ $last_name ?? '' }}</title>
     <style>
-        body {
-            font-family: Calibri, Arial, sans-serif;
-            background: #fff;
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
+    body {
+        font-family: Calibri, Arial, sans-serif;
+        background: #fff;
+        color: #333;
+        line-height: 1.3;
+        margin: 0;
+        padding: 0;
+        font-size: 13px;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 30px auto;
-            background: #fff;
-            padding: 40px 50px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
+    .container {
+        max-width: 800px;
+        margin: 10px auto;
+        background: #fff;
+        padding: 20px 25px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        border-radius: 4px;
+    }
 
-        .header {
-            text-align: center; 
-            margin-bottom: 30px;
-            border-bottom: 2px solid #000;
-            padding-bottom: 20px;
-        }
+    .header {
+        text-align: center; 
+        margin-bottom: 12px;
+       
+        padding-bottom: 6px;
+    }
 
-        .header h1 {
-            font-family: "Times New Roman", serif;
-            font-size: 36px;
-            margin: 0;
-            font-weight: bold;
-            color: #000;
-        }
+    .header h1 {
+        font-family: "Times New Roman", serif;
+        font-size: 26px;
+        margin: 0;
+        font-weight: bold;
+        color: #000;
+    }
 
-        .header p.profession {
-            font-family: "Times New Roman", serif;
-            font-size: 20px;
-            margin: 5px 0 10px 0;
-            color: #555;
-        }
+    .header p.profession {
+        font-family: "Times New Roman", serif;
+        font-size: 16px;
+        margin: 2px 0 4px 0;
+        color: #555;
+    }
 
-        .header .contact {
-            font-size: 14px;
-            color: #555;
-        }
+    .header .contact {
+        font-size: 12px;
+        color: #555;
+        line-height: 1.2;
+    }
 
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #000; 
-        }
+    .section-title {
+        font-size: 14px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 4px;
+        padding-bottom: 2px;
+        border-bottom: 2px solid #000;
+    }
 
-        .section {
-            margin-top: 25px;
-        }
+    .section {
+        margin-top: 10px;
+    }
 
-        .job-item, .edu-item {
-            background: #f9f9f9;
-            padding: 15px 20px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border-left: 3px solid #000;
-        }
+    .job-item, .edu-item {
+        background: #f9f9f9;
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        border-radius: 3px;
+        border-left: 2px solid #000;
+    }
 
-        .job-header, .edu-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
+    .job-header, .edu-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3px;
+    }
 
-        .job-title, .edu-degree {
-            font-weight: bold;
-            font-size: 16px;
-            color: #000;
-            display: inline;
-        }
+    .job-title, .edu-degree {
+        font-weight: bold;
+        font-size: 14px;
+        color: #000;
+        display: inline;
+    }
 
-        .company, .school {
-            font-weight: bold;
-            color: #333;
-            margin-left: 5px;
-            display: inline;
-        }
+    .company, .school {
+        font-weight: bold;
+        color: #333;
+        margin-left: 3px;
+        display: inline;
+    }
 
-        .date {
-            font-size: 14px;
-            color: #555;
-            white-space: nowrap;
-        }
+    .date {
+        font-size: 12px;
+        color: #555;
+        white-space: nowrap;
+    }
 
-        .job-item p, .edu-item p {
-            margin-top: 8px;
-            font-size: 15px;
-            color: #333;
-        }
+    .job-item p, .edu-item p {
+        margin-top: 3px;
+        font-size: 13px;
+        color: #333;
+    }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
 
-        ul {
-            padding-left: 20px;
-        }
+    ul {
+        padding-left: 16px;
+        margin: 0;
+    }
 
-        li {
-            margin-bottom: 5px;
-        }
+    li {
+        margin-bottom: 2px;
+        font-size: 13px;
+    }
 
-        .footer {
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-            margin-top: 40px;
-            border-top: 1px solid #e5e7eb;
-            padding-top: 20px;
-        }
-    </style>
+    .footer {
+        text-align: center;
+        font-size: 10px;
+        color: #666;
+        margin-top: 15px;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 6px;
+    }
+
+    p {
+        margin: 2px 0;
+    }
+</style>
+
 </head>
 <body>
     <div class="container">
