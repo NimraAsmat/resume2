@@ -83,6 +83,7 @@ class ResumeController extends Controller
             }
         }
 
+        
         $employmentData = [];
         if (isset($formData['job_title']) && is_array($formData['job_title'])) {
             foreach ($formData['job_title'] as $index => $title) {
@@ -109,6 +110,7 @@ class ResumeController extends Controller
             }
         }
 
+        
         $educationData = [];
         if (isset($formData['degree']) && is_array($formData['degree'])) {
             foreach ($formData['degree'] as $index => $degree) {
@@ -135,25 +137,27 @@ class ResumeController extends Controller
             }
         }
 
+    
         $skillsData = [];
         if (isset($formData['skills']) && is_array($formData['skills'])) {
             foreach ($formData['skills'] as $index => $skill) {
                 if (!empty(trim($skill))) {
                     $skillsData[] = [
                         'skill' => $skill,
-                        'skill_level' => $formData['skill_level'][$index] ?? ''
+                        'skill_level' => $formData['skill_level'][$index] ?? 'Intermediate'
                     ];
                 }
             }
         }
 
+        
         $languagesData = [];
         if (isset($formData['languages']) && is_array($formData['languages'])) {
             foreach ($formData['languages'] as $index => $language) {
                 if (!empty(trim($language))) {
                     $languagesData[] = [
                         'language' => $language,
-                        'language_level' => $formData['language_level'][$index] ?? ''
+                        'language_level' => $formData['language_level'][$index] ?? 'Intermediate'
                     ];
                 }
             }
@@ -173,6 +177,7 @@ class ResumeController extends Controller
             'interests' => $formData['interests'] ?? '',
             'summary' => $formData['summary'] ?? '',
             
+            
             'job_title' => $formData['job_title'] ?? [],
             'company' => $formData['company'] ?? [],
             'job_start' => $formData['job_start'] ?? [],
@@ -190,6 +195,7 @@ class ResumeController extends Controller
             'languages' => $formData['languages'] ?? [],
             'language_level' => $formData['language_level'] ?? [],
             
+          
             'employment_data' => $employmentData,
             'education_data' => $educationData,
             'skills_data' => $skillsData,
@@ -197,26 +203,24 @@ class ResumeController extends Controller
         ];
     }
 
-    
     private function parseDateForDisplay($dateString)
     {
         if (empty($dateString)) {
             return '';
         }
 
-       
+        
         if (preg_match('/[a-zA-Z]/', $dateString)) {
             return $dateString;
         }
 
-       
         $formats = ['Y-m', 'Y-m-d', 'm/Y', 'd/m/Y', 'm-Y'];
         
         foreach ($formats as $format) {
             try {
                 $date = Carbon::createFromFormat($format, $dateString);
                 if ($format === 'Y-m') {
-                    return $date->format('M Y'); 
+                    return $date->format('M Y');
                 }
                 return $date->format('M Y');
             } catch (\Exception $e) {
@@ -224,22 +228,10 @@ class ResumeController extends Controller
             }
         }
 
-        
+       
         return $dateString;
     }
 
-   
-    private function isValidDateFormat($dateString, $format = 'Y-m')
-    {
-        try {
-            Carbon::createFromFormat($format, $dateString);
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    
     public function save(Request $request)
     {
         try {
@@ -255,23 +247,17 @@ class ResumeController extends Controller
 
             $allData = $request->all();
             
-            
-            $this->validateDateFormats($allData);
-            
-           
             $user = auth()->user();
             
             if (!$user) {
                 throw new \Exception('User not authenticated');
             }
 
-          
             $template = Template::where('view_name', $request->template)->first();
             if (!$template) {
                 throw new \Exception('Template not found');
             }
 
-           
             $resume = Resume::updateOrCreate(
                 [
                     'user_id' => $user->id,
@@ -295,15 +281,15 @@ class ResumeController extends Controller
 
             
             if (isset($allData['job_title'])) {
-                $resume->employmentHistories()->delete(); 
+                $resume->employmentHistories()->delete();
                 foreach ($allData['job_title'] as $index => $title) {
                     if (!empty(trim($title))) {
                         EmploymentHistory::create([
                             'resume_id' => $resume->id,
                             'job_title' => $title,
                             'company' => $allData['company'][$index] ?? null,
-                            'start_date' => $allData['job_start'][$index] ?? null,
-                            'end_date' => $allData['job_end'][$index] ?? null,
+                            'start_date' => $this->normalizeDate($allData['job_start'][$index] ?? null),
+                            'end_date' => $this->normalizeDate($allData['job_end'][$index] ?? null),
                             'description' => $allData['job_description'][$index] ?? null,
                         ]);
                     }
@@ -319,15 +305,15 @@ class ResumeController extends Controller
                             'resume_id' => $resume->id,
                             'degree' => $degree,
                             'institution' => $allData['school'][$index] ?? null,
-                            'start_date' => $allData['edu_start'][$index] ?? null,
-                            'end_date' => $allData['edu_end'][$index] ?? null,
+                            'start_date' => $this->normalizeDate($allData['edu_start'][$index] ?? null),
+                            'end_date' => $this->normalizeDate($allData['edu_end'][$index] ?? null),
                             'description' => $allData['edu_description'][$index] ?? null,
                         ]);
                     }
                 }
             }
 
-            
+           
             if (isset($allData['skills'])) {
                 $resume->skills()->delete();
                 foreach ($allData['skills'] as $index => $skill) {
@@ -341,12 +327,11 @@ class ResumeController extends Controller
                 }
             }
 
-         
+          
             if (isset($allData['languages'])) {
                 $resume->languages()->delete();
                 foreach ($allData['languages'] as $index => $language) {
                     if (!empty(trim($language))) {
-                        
                         $proficiency = $allData['language_level'][$index] ?? 'Intermediate';
                         Language::create([
                             'resume_id' => $resume->id,
@@ -359,7 +344,6 @@ class ResumeController extends Controller
 
             DB::commit();
 
-            
             session(['resume_draft' => $allData]);
             
             Log::info('Resume saved to database successfully', ['resume_id' => $resume->id, 'user_id' => $user->id]);
@@ -381,37 +365,45 @@ class ResumeController extends Controller
         }
     }
 
-   
-    private function validateDateFormats(&$data)
+ 
+    private function normalizeDate($dateString)
     {
-        $dateFields = ['job_start', 'job_end', 'edu_start', 'edu_end'];
+        if (empty($dateString)) {
+            return null;
+        }
+
+       
+        if (preg_match('/^\d{4}-\d{2}$/', $dateString)) {
+            return $dateString;
+        }
+
         
-        foreach ($dateFields as $field) {
-            if (isset($data[$field]) && is_array($data[$field])) {
-                foreach ($data[$field] as $index => $date) {
-                    if (!empty($date) && !$this->isValidDateFormat($date)) {
-                        Log::warning("Invalid date format for {$field}[{$index}]: {$date}");
-                     
-                    }
-                }
+        $formats = ['Y-m', 'Y-m-d', 'm/Y', 'd/m/Y', 'm-Y'];
+        
+        foreach ($formats as $format) {
+            try {
+                $date = Carbon::createFromFormat($format, $dateString);
+                return $date->format('Y-m'); 
+            } catch (\Exception $e) {
+                continue;
             }
         }
+
+     
+        return $dateString;
     }
 
-    
     public function download(Request $request)
     {
         Log::info('=== RESUME DOWNLOAD REQUEST STARTED ===');
         Log::info('Form Data Received for Download:', $request->all());
 
         try {
-            
             if (!auth()->check()) {
                 Log::error('User not authenticated for download');
                 return redirect('/login');
             }
 
-           
             $requiredFields = ['first_name', 'last_name', 'email', 'template'];
             foreach ($requiredFields as $field) {
                 if (empty($request->$field)) {
@@ -420,7 +412,7 @@ class ResumeController extends Controller
                 }
             }
 
-           
+            
             $saveResponse = $this->saveToDatabase($request);
             if (!$saveResponse['success']) {
                 throw new \Exception('Failed to save resume data: ' . $saveResponse['message']);
@@ -428,19 +420,16 @@ class ResumeController extends Controller
 
             Log::info('Resume saved to database, now generating PDF');
 
-          
             $data = $this->prepareDownloadData($request->all());
             $selectedTemplate = $request->template;
             
             Log::info("Generating PDF with template: {$selectedTemplate}");
             
-           
             if (!view()->exists("templates.{$selectedTemplate}")) {
                 Log::error("Template view not found: templates.{$selectedTemplate}");
                 return back()->with('error', "Selected template not found");
             }
 
-            
             $pdf = Pdf::loadView("templates.{$selectedTemplate}", $data);
             $pdf->setPaper('A4', 'portrait');
             $pdf->setOption('enable_html5_parser', true);
@@ -450,10 +439,8 @@ class ResumeController extends Controller
             
             Log::info("PDF generated successfully, downloading: {$filename}");
             
-            
             session()->forget('resume_draft');
             
-          
             return $pdf->download($filename);
 
         } catch (\Exception $e) {
@@ -463,7 +450,6 @@ class ResumeController extends Controller
         }
     }
 
-  
     private function saveToDatabase($request)
     {
         try {
@@ -479,7 +465,6 @@ class ResumeController extends Controller
                 throw new \Exception('Template not found');
             }
 
-          
             $resume = Resume::updateOrCreate(
                 [
                     'user_id' => $user->id,
@@ -501,7 +486,6 @@ class ResumeController extends Controller
                 ]
             );
 
-           
             $this->saveRelatedData($resume, $request->all());
 
             DB::commit();
@@ -515,7 +499,6 @@ class ResumeController extends Controller
         }
     }
 
-    
     private function saveRelatedData($resume, $allData)
     {
         
@@ -527,15 +510,15 @@ class ResumeController extends Controller
                         'resume_id' => $resume->id,
                         'job_title' => $title,
                         'company' => $allData['company'][$index] ?? null,
-                        'start_date' => $allData['job_start'][$index] ?? null,
-                        'end_date' => $allData['job_end'][$index] ?? null,
+                        'start_date' => $this->normalizeDate($allData['job_start'][$index] ?? null),
+                        'end_date' => $this->normalizeDate($allData['job_end'][$index] ?? null),
                         'description' => $allData['job_description'][$index] ?? null,
                     ]);
                 }
             }
         }
 
-      
+        
         if (isset($allData['degree'])) {
             $resume->educations()->delete();
             foreach ($allData['degree'] as $index => $degree) {
@@ -544,20 +527,19 @@ class ResumeController extends Controller
                         'resume_id' => $resume->id,
                         'degree' => $degree,
                         'institution' => $allData['school'][$index] ?? null,
-                        'start_date' => $allData['edu_start'][$index] ?? null,
-                        'end_date' => $allData['edu_end'][$index] ?? null,
+                        'start_date' => $this->normalizeDate($allData['edu_start'][$index] ?? null),
+                        'end_date' => $this->normalizeDate($allData['edu_end'][$index] ?? null),
                         'description' => $allData['edu_description'][$index] ?? null,
                     ]);
                 }
             }
         }
 
-       
+      
         if (isset($allData['skills'])) {
             $resume->skills()->delete();
             foreach ($allData['skills'] as $index => $skill) {
                 if (!empty(trim($skill))) {
-                  
                     $level = $allData['skill_level'][$index] ?? 'Intermediate';
                     Skill::create([
                         'resume_id' => $resume->id,
@@ -573,7 +555,6 @@ class ResumeController extends Controller
             $resume->languages()->delete();
             foreach ($allData['languages'] as $index => $language) {
                 if (!empty(trim($language))) {
-                   
                     $proficiency = $allData['language_level'][$index] ?? 'Intermediate';
                     Language::create([
                         'resume_id' => $resume->id,
@@ -598,6 +579,7 @@ class ResumeController extends Controller
             }
         }
 
+        
         $employmentData = [];
         if (isset($formData['job_title']) && is_array($formData['job_title'])) {
             foreach ($formData['job_title'] as $index => $title) {
@@ -624,6 +606,7 @@ class ResumeController extends Controller
             }
         }
 
+        
         $educationData = [];
         if (isset($formData['degree']) && is_array($formData['degree'])) {
             foreach ($formData['degree'] as $index => $degree) {
@@ -650,6 +633,7 @@ class ResumeController extends Controller
             }
         }
 
+       
         $skillsData = [];
         if (isset($formData['skills']) && is_array($formData['skills'])) {
             foreach ($formData['skills'] as $index => $skill) {
@@ -662,6 +646,7 @@ class ResumeController extends Controller
             }
         }
 
+       
         $languagesData = [];
         if (isset($formData['languages']) && is_array($formData['languages'])) {
             foreach ($formData['languages'] as $index => $language) {
@@ -688,6 +673,7 @@ class ResumeController extends Controller
             'interests' => $formData['interests'] ?? '',
             'summary' => $formData['summary'] ?? '',
             
+            
             'job_title' => $formData['job_title'] ?? [],
             'company' => $formData['company'] ?? [],
             'job_start' => $formData['job_start'] ?? [],
@@ -705,6 +691,7 @@ class ResumeController extends Controller
             'languages' => $formData['languages'] ?? [],
             'language_level' => $formData['language_level'] ?? [],
             
+           
             'employment_data' => $employmentData,
             'education_data' => $educationData,
             'skills_data' => $skillsData,
@@ -748,7 +735,6 @@ class ResumeController extends Controller
         ]);
     }
 
-    
     public function testDateParsing(Request $request)
     {
         $testDates = [
@@ -770,7 +756,6 @@ class ResumeController extends Controller
         ]);
     }
 
-    
     public function loadSaved($id)
     {
         try {
@@ -791,7 +776,6 @@ class ResumeController extends Controller
         }
     }
 
-   
     public function listSaved()
     {
         try {
@@ -810,5 +794,204 @@ class ResumeController extends Controller
                 'message' => 'Failed to load resumes'
             ], 500);
         }
+    }
+
+    
+    public function getSavedDrafts()
+    {
+        try {
+            $user = auth()->user();
+            
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not authenticated'
+                ], 401);
+            }
+
+            $drafts = Resume::with(['template', 'employmentHistories', 'educations', 'skills', 'languages'])
+                ->where('user_id', $user->id)
+                ->orderBy('updated_at', 'desc')
+                ->get()
+                ->map(function ($resume) {
+                    return [
+                        'id' => $resume->id,
+                        'first_name' => $resume->first_name,
+                        'last_name' => $resume->last_name,
+                        'email' => $resume->email,
+                        'phone' => $resume->phone,
+                        'occupation' => $resume->occupation,
+                        'country' => $resume->country,
+                        'nationality' => $resume->nationality,
+                        'dob' => $resume->dob ? $resume->dob->format('Y-m-d') : null,
+                        'gender' => $resume->gender,
+                        'summary' => $resume->summary,
+                        'hobbies' => $resume->hobbies,
+                        'interests' => $resume->interests,
+                        'template' => $resume->template->view_name ?? 'template1',
+                        'updated_at' => $resume->updated_at->format('Y-m-d H:i:s'),
+                        'employment_data' => $resume->employmentHistories->map(function ($employment) {
+                            return [
+                                'job_title' => $employment->job_title,
+                                'company' => $employment->company,
+                                'job_start' => $employment->start_date,
+                                'job_end' => $employment->end_date,
+                                'job_description' => $employment->description
+                            ];
+                        })->toArray(),
+                        'education_data' => $resume->educations->map(function ($education) {
+                            return [
+                                'degree' => $education->degree,
+                                'school' => $education->institution,
+                                'edu_start' => $education->start_date,
+                                'edu_end' => $education->end_date,
+                                'edu_description' => $education->description
+                            ];
+                        })->toArray(),
+                        'skills_data' => $resume->skills->map(function ($skill) {
+                            return [
+                                'skill' => $skill->skill,
+                                'skill_level' => $skill->level
+                            ];
+                        })->toArray(),
+                        'languages_data' => $resume->languages->map(function ($language) {
+                            return [
+                                'language' => $language->language,
+                                'language_level' => $language->proficiency
+                            ];
+                        })->toArray()
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'drafts' => $drafts
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch saved drafts: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load saved drafts'
+            ], 500);
+        }
+    }
+
+    
+    public function deleteDraft($id)
+    {
+        try {
+            $user = auth()->user();
+            
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not authenticated'
+                ], 401);
+            }
+
+            $resume = Resume::where('id', $id)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$resume) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Resume not found'
+                ], 404);
+            }
+
+            $resume->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Draft deleted successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to delete draft: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete draft'
+            ], 500);
+        }
+    }
+
+ 
+    public function exportPdf($id)
+    {
+        try {
+            $resume = Resume::with(['employmentHistories', 'educations', 'skills', 'languages', 'template'])
+                ->where('id', $id)
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
+
+            $data = $this->prepareResumeData($resume);
+            $template = $resume->template->view_name ?? 'template1';
+
+            $pdf = Pdf::loadView("templates.{$template}", $data);
+            $pdf->setPaper('A4', 'portrait');
+            
+            $filename = "resume-{$data['first_name']}-{$data['last_name']}.pdf";
+            
+            return $pdf->download($filename);
+
+        } catch (\Exception $e) {
+            Log::error('PDF EXPORT FAILED: ' . $e->getMessage());
+            return back()->with('error', 'Failed to export PDF: ' . $e->getMessage());
+        }
+    }
+
+    
+    private function prepareResumeData($resume)
+    {
+        return [
+            'first_name' => $resume->first_name,
+            'last_name' => $resume->last_name,
+            'email' => $resume->email,
+            'phone' => $resume->phone,
+            'occupation' => $resume->occupation,
+            'country' => $resume->country,
+            'dob' => $resume->dob ? $resume->dob->format('F j, Y') : null,
+            'nationality' => $resume->nationality,
+            'gender' => $resume->gender,
+            'hobbies' => $resume->hobbies,
+            'interests' => $resume->interests,
+            'summary' => $resume->summary,
+            
+            'employment_data' => $resume->employmentHistories->map(function ($employment) {
+                return [
+                    'job_title' => $employment->job_title,
+                    'company' => $employment->company,
+                    'job_start' => $this->parseDateForDisplay($employment->start_date),
+                    'job_end' => $this->parseDateForDisplay($employment->end_date),
+                    'job_description' => $employment->description
+                ];
+            })->toArray(),
+            
+            'education_data' => $resume->educations->map(function ($education) {
+                return [
+                    'degree' => $education->degree,
+                    'school' => $education->institution,
+                    'edu_start' => $this->parseDateForDisplay($education->start_date),
+                    'edu_end' => $this->parseDateForDisplay($education->end_date),
+                    'edu_description' => $education->description
+                ];
+            })->toArray(),
+            
+            'skills_data' => $resume->skills->map(function ($skill) {
+                return [
+                    'skill' => $skill->skill,
+                    'skill_level' => $skill->level
+                ];
+            })->toArray(),
+            
+            'languages_data' => $resume->languages->map(function ($language) {
+                return [
+                    'language' => $language->language,
+                    'language_level' => $language->proficiency
+                ];
+            })->toArray(),
+        ];
     }
 }

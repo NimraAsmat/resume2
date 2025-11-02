@@ -17,10 +17,9 @@
       border-radius: 0.25rem 0 0 0.25rem !important;
     }
     .iti__country-list {
-      width: 500% !important;
+      width: 870% !important;
     }
     
-   
     .custom-select {
       background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0ibTcgNyA1IDUgNS01IiBzdHJva2U9IiM2QjcyODAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+');
       background-repeat: no-repeat;
@@ -29,14 +28,12 @@
       padding-right: 2.5rem !important;
     }
     
-    
     select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
     }
 
-   
     .no-scrollbar {
       -ms-overflow-style: none;
       scrollbar-width: none;
@@ -44,7 +41,6 @@
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
-
 
     .validation-valid {
       border-color: #10b981 !important;
@@ -57,38 +53,39 @@
     .validation-normal {
       border-color: #93c5fd !important;
     }
+    .gradient-text {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #1d4ed8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+}
   </style>
 </head>
 <body class="bg-gray-50 font-sans">
-<header class="text-black">
-    <div class="max-w-8xl mx-auto px-6 py-4">
+<header class="bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 border-b border-white/20">
+    <div class="max-w-8xl mx-auto px-4 py-3">
         <div class="flex justify-between items-center">
-
-            
             <div class="flex-1 text-center">
-                <h1 class="text-4xl font-bold text-black">
-                    ResumeBuilder Pro
+                <h1 class="text-3xl font-bold text-white">
+                    <span class="gradient-text">ResumeBuilder</span> Pro
                 </h1>
-                <p class="text-black/60 text-sm hidden sm:block">Professional Resume Creator</p>
+                <p class="text-white/80 text-sm hidden sm:block">Professional Resume Creator</p>
             </div>
-
             
             <div class="relative group" id="userMenu">
                 <button class="flex items-center space-x-3 transition-all duration-200">
-                    <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center shadow-md">
-                        <span class="text-white font-semibold text-lg uppercase">
+                    <div class="w-9 h-9 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-white font-semibold text-md uppercase">
                             {{ substr(Auth::user()->name ?? 'U', 0, 1) }}
                         </span>
                     </div>
                 </button>
 
-               
-                <div class="absolute right-0 mt-3 w-60 bg-white rounded-xl shadow-lg border border-gray-200 opacity-0 invisible 
+                <div class="absolute right-0 mt-2 w-60 bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 opacity-0 invisible 
                     group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
-
-                  
-                    <div class="p-4 border-b border-gray-200">
-                        <p class="text-gray-900 font-semibold text-sm truncate">
+                    <div class="p-3 border-b border-white/20">
+                        <p class="text-gray-800 font-semibold text-sm truncate">
                             {{ ucfirst(Auth::user()->name ?? 'User') }}
                         </p>
                         <p class="text-gray-600 text-xs truncate">
@@ -96,8 +93,7 @@
                         </p>
                     </div>
 
-                   
-                    <div class="p-3">
+                    <div class="p-2">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="flex items-center w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition duration-200">
@@ -106,29 +102,25 @@
                             </button>
                         </form>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
 </header>
 
-<main class="max-w-8xl mx-auto mt-8 p-6">
-    
+<main class="max-w-8xl mx-auto mt-4 p-4">
     <div id="formPage" class="transition-all duration-300 ease-in-out">
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        
-        
-        <div class="bg-white shadow-xl rounded-2xl p-8 lg:col-span-3">
-        
-          <div class="bg-white p-6 rounded-xl shadow-sm mb-6 border border-gray-100">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      
+        <div class="bg-white shadow-xl rounded-xl p-6 lg:col-span-3">
+      
+          <div class="bg-white p-4 rounded-lg shadow-sm mb-4 border border-gray-100">
             <div class="flex justify-between items-center">
-              <div class="flex items-center space-x-4">
+              <div class="flex items-center space-x-3">
                 <div id="autoSaveIndicator" class="w-3 h-3 bg-gray-400 rounded-full transition-all duration-300"></div>
                 <div>
                   <span id="autoSaveText" class="text-sm font-semibold text-gray-700">Idle</span>
-                  <div id="lastSaved" class="text-xs text-gray-500 mt-1"></div>
+                  <div id="lastSaved" class="text-xs text-gray-500 mt-0.5"></div>
                 </div>
               </div>
               <button type="button" onclick="clearDraft()" class="text-xs text-red-500 hover:text-red-700 font-medium">
@@ -137,243 +129,246 @@
             </div>
           </div>
 
-          <div class="mb-8">
-            <h2 class="text-lg font-bold text-gray-800 mb-3">Resume Progress</h2>
-            <div class="w-full bg-gray-200 rounded-full h-2.5">
-              <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full transition-all duration-500" style="width:0%"></div>
+        
+          <div class="mb-6">
+            <h2 class="text-md font-bold text-gray-800 mb-2">Resume Progress</h2>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500" style="width:0%"></div>
             </div>
-            <div class="flex justify-between text-sm text-gray-600 mt-2">
+            <div class="flex justify-between text-sm text-gray-600 mt-1">
               <span class="font-medium">Get Started</span>
               <span id="progressText" class="font-semibold">0% Complete</span>
             </div>
           </div>
 
-          <div id="messageContainer" class="hidden mb-6 p-4 rounded-xl border-l-4"></div>
+          <div id="messageContainer" class="hidden mb-4 p-3 rounded-lg border-l-4"></div>
 
           <form method="POST" action="{{ route('resume.download') }}" id="resumeForm" novalidate>
             @csrf
             <input type="hidden" name="template" id="selectedTemplate" value="">
             <input type="hidden" name="phone" id="fullPhone">
 
-            
-            <section class="space-y-6 mb-8">
-              <div class="border-b border-gray-200 pb-4">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Personal Details</h3>
-                <p class="text-gray-600 text-sm">Enter your basic personal information, such as your name, contact details, and nationality.</p>
+           
+            <section class="space-y-4 mb-6">
+              <div class="border-b border-gray-200 pb-3">
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Personal Details</h3>
+                <p class="text-gray-600 text-xs">Enter your basic personal information</p>
               </div>
               
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold text-gray-800 mb-2">First Name</label>
-                  <input type="text" name="first_name" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="name">
-                  <span class="text-red-500 text-xs mt-1 hidden" id="first_name_error"></span>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="mb-3">
+                  <label class="block text-sm font-semibold text-gray-800 mb-1">First Name</label>
+                  <input type="text" name="first_name" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="name">
+                  <span class="text-red-500 text-xs mt-0.5 hidden" id="first_name_error"></span>
                 </div>
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold text-gray-800 mb-2">Last Name</label>
-                  <input type="text" name="last_name" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="name">
-                  <span class="text-red-500 text-xs mt-1 hidden" id="last_name_error"></span>
+                <div class="mb-3">
+                  <label class="block text-sm font-semibold text-gray-800 mb-1">Last Name</label>
+                  <input type="text" name="last_name" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="name">
+                  <span class="text-red-500 text-xs mt-0.5 hidden" id="last_name_error"></span>
                 </div>
               </div>
               
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold text-gray-800 mb-2">Email</label>
-                  <input type="email" name="email" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="email">
-                  <span class="text-red-500 text-xs mt-1 hidden" id="email_error"></span>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="mb-3">
+                  <label class="block text-sm font-semibold text-gray-800 mb-1">Email</label>
+                  <input type="email" name="email" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="email">
+                  <span class="text-red-500 text-xs mt-0.5 hidden" id="email_error"></span>
                 </div>
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold text-gray-800 mb-2">Phone Number</label>
+                <div class="mb-3">
+                  <label class="block text-sm font-semibold text-gray-800 mb-1">Phone Number</label>
                   <div class="relative">
-                    <input type="tel" id="phone" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validatePhoneField()">
-                    <span class="text-red-500 text-xs mt-1 hidden" id="phone_error"></span>
+                    <input type="tel" id="phone" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validatePhoneField()">
+                    <span class="text-red-500 text-xs mt-0.5 hidden" id="phone_error"></span>
                   </div>
                 </div>
               </div>
               
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold text-gray-800 mb-2">Occupation</label>
-                  <input type="text" name="occupation" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
-                  <span class="text-red-500 text-xs mt-1 hidden" id="occupation_error"></span>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="mb-3">
+                  <label class="block text-sm font-semibold text-gray-800 mb-1">Occupation</label>
+                  <input type="text" name="occupation" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
+                  <span class="text-red-500 text-xs mt-0.5 hidden" id="occupation_error"></span>
                 </div>
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold text-gray-800 mb-2">Country</label>
-                  <select name="country" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
+                <div class="mb-3">
+                  <label class="block text-sm font-semibold text-gray-800 mb-1">Country</label>
+                  <select name="country" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
                     <option value="">Select Country</option>
                     @include('partials.country-options')
                   </select>
-                  <span class="text-red-500 text-xs mt-1 hidden" id="country_error"></span>
+                  <span class="text-red-500 text-xs mt-0.5 hidden" id="country_error"></span>
                 </div>
               </div>
               
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold text-gray-800 mb-2">Date of Birth</label>
-                  <input type="date" name="dob" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" onchange="validateField(this)" data-validation="date">
-                  <span class="text-red-500 text-xs mt-1 hidden" id="dob_error"></span>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="mb-3">
+                  <label class="block text-sm font-semibold text-gray-800 mb-1">Date of Birth</label>
+                  <input type="date" name="dob" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" onchange="validateField(this)" data-validation="date">
+                  <span class="text-red-500 text-xs mt-0.5 hidden" id="dob_error"></span>
                 </div>
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold text-gray-800 mb-2">Nationality</label>
-                  <select name="nationality" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
+                <div class="mb-3">
+                  <label class="block text-sm font-semibold text-gray-800 mb-1">Nationality</label>
+                  <select name="nationality" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
                     <option value="">Select Nationality</option>
                     @include('partials.nationality-options')
                   </select>
-                  <span class="text-red-500 text-xs mt-1 hidden" id="nationality_error"></span>
+                  <span class="text-red-500 text-xs mt-0.5 hidden" id="nationality_error"></span>
                 </div>
               </div>
               
-              <div class="mb-4">
-                <label class="block text-sm font-semibold text-gray-800 mb-2">Gender</label>
-                <select name="gender" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
+              <div class="mb-3">
+                <label class="block text-sm font-semibold text-gray-800 mb-1">Gender</label>
+                <select name="gender" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
                   <option value="">Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>
                   <option value="Prefer not to say">Prefer not to say</option>
                 </select>
-                <span class="text-red-500 text-xs mt-1 hidden" id="gender_error"></span>
+                <span class="text-red-500 text-xs mt-0.5 hidden" id="gender_error"></span>
               </div>
             </section>
 
-            <section id="additionalDetails" class="space-y-6 mt-8 hidden">
-              <div class="border-b border-gray-200 pb-4">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Additional Details</h3>
-                <p class="text-gray-600 text-sm">Include hobbies, interests, or personal achievements.</p>
+          
+            <section id="additionalDetails" class="space-y-4 mt-6 hidden">
+              <div class="border-b border-gray-200 pb-3">
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Additional Details</h3>
+                <p class="text-gray-600 text-xs">Include hobbies, interests, or personal achievements</p>
               </div>
-              <div class="mb-4">
-                <label class="block text-sm font-semibold text-gray-800 mb-2">Hobbies</label>
-                <textarea name="hobbies" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 additional-field validation-normal" placeholder="e.g., Reading, Traveling, Photography" oninput="validateField(this)" data-validation="textarea" rows="3"></textarea>
-                <span class="text-red-500 text-xs mt-1 hidden" id="hobbies_error"></span>
+              <div class="mb-3">
+                <label class="block text-sm font-semibold text-gray-800 mb-1">Hobbies</label>
+                <textarea name="hobbies" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 additional-field validation-normal" placeholder="e.g., Reading, Traveling, Photography" oninput="validateField(this)" data-validation="textarea" rows="2"></textarea>
+                <span class="text-red-500 text-xs mt-0.5 hidden" id="hobbies_error"></span>
               </div>
-              <div class="mb-4">
-                <label class="block text-sm font-semibold text-gray-800 mb-2">Interests</label>
-                <textarea name="interests" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 additional-field validation-normal" placeholder="e.g., AI Technology, Environmental Conservation" oninput="validateField(this)" data-validation="textarea" rows="3"></textarea>
-                <span class="text-red-500 text-xs mt-1 hidden" id="interests_error"></span>
-              </div>
-            </section>
-
-            <div class="text-center my-8">
-              <button type="button" onclick="toggleAdditional()" class="px-8 py-3 font-bold border-2 border-blue-500 text-blue-600 bg-white rounded-xl hover:bg-blue-50 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
-                <span id="additionalIcon" class="text-lg">+</span> 
-                <span id="additionalText" class="ml-2">Show Additional Details</span>
-              </button>
-            </div>
-
-            <section class="space-y-6 mb-8">
-              <div class="border-b border-gray-200 pb-4">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Professional Summary</h3>
-                <p class="text-gray-600 text-sm">Provide a brief overview of your professional background and career objectives.</p>
-              </div>
-              <div class="mb-4">
-                <textarea name="summary" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" placeholder="Enter your professional summary..." oninput="validateField(this)" data-validation="textarea" rows="5"></textarea>
-                <span class="text-red-500 text-xs mt-1 hidden" id="summary_error"></span>
+              <div class="mb-3">
+                <label class="block text-sm font-semibold text-gray-800 mb-1">Interests</label>
+                <textarea name="interests" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 additional-field validation-normal" placeholder="e.g., AI Technology, Environmental Conservation" oninput="validateField(this)" data-validation="textarea" rows="2"></textarea>
+                <span class="text-red-500 text-xs mt-0.5 hidden" id="interests_error"></span>
               </div>
             </section>
 
             
-            <section class="mt-8 space-y-6">
-              <div class="border-b border-gray-200 pb-4">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Employment History</h3>
-                <p class="text-gray-600 text-sm">List your previous jobs in reverse chronological order.</p>
+            <div class="text-center my-6">
+              <button type="button" onclick="toggleAdditional()" class="px-6 py-2.5 font-bold border border-blue-500 text-blue-600 bg-white rounded-lg hover:bg-blue-50 hover:shadow transition-all duration-200">
+                <span id="additionalIcon" class="text-md">+</span> 
+                <span id="additionalText" class="ml-1">Show Additional Details</span>
+              </button>
+            </div>
+
+            
+            <section class="space-y-4 mb-6">
+              <div class="border-b border-gray-200 pb-3">
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Professional Summary</h3>
+                <p class="text-gray-600 text-xs">Brief overview of your professional background</p>
+              </div>
+              <div class="mb-3">
+                <textarea name="summary" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" placeholder="Enter your professional summary..." oninput="validateField(this)" data-validation="textarea" rows="3"></textarea>
+                <span class="text-red-500 text-xs mt-0.5 hidden" id="summary_error"></span>
+              </div>
+            </section>
+
+           
+            <section class="mt-6 space-y-4">
+              <div class="border-b border-gray-200 pb-3">
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Employment History</h3>
+                <p class="text-gray-600 text-xs">List your previous jobs</p>
               </div>
               <div id="employmentContainer"></div>
               <div class="text-center">
-                <button type="button" onclick="addEmployment()" class="px-6 py-3 font-bold border-2 border-blue-500 text-blue-600 bg-white rounded-xl hover:bg-blue-50 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
-                  <span class="text-blue-600 text-lg">+</span> 
-                  <span class="ml-2">Add Job</span>
+                <button type="button" onclick="addEmployment()" class="px-5 py-2 font-bold border border-blue-500 text-blue-600 bg-white rounded-lg hover:bg-blue-50 hover:shadow transition-all duration-200">
+                  <span class="text-blue-600 text-md">+</span> 
+                  <span class="ml-1">Add Job</span>
                 </button>
               </div>
             </section>
 
           
-            <section class="mt-8 space-y-6">
-              <div class="border-b border-gray-200 pb-4">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Education</h3>
-                <p class="text-gray-600 text-sm">Enter your academic qualifications and institutions.</p>
+            <section class="mt-6 space-y-4">
+              <div class="border-b border-gray-200 pb-3">
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Education</h3>
+                <p class="text-gray-600 text-xs">Enter your academic qualifications</p>
               </div>
               <div id="educationContainer"></div>
               <div class="text-center">
-                <button type="button" onclick="addEducation()" class="px-6 py-3 font-bold border-2 border-blue-500 text-blue-600 bg-white rounded-xl hover:bg-blue-50 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
-                  <span class="text-blue-600 text-lg">+</span> 
-                  <span class="ml-2">Add Education</span>
-                </button>
-              </div>
-            </section>
-
-            
-            <section class="mt-8 space-y-6">
-              <div class="border-b border-gray-200 pb-4">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Languages</h3>
-                <p class="text-gray-600 text-sm">Select the languages you know and your proficiency level.</p>
-              </div>
-              <div id="languageContainer"></div>
-              <div class="text-center">
-                <button type="button" onclick="addLanguage()" class="px-6 py-3 font-bold border-2 border-blue-500 text-blue-600 bg-white rounded-xl hover:bg-blue-50 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
-                  <span class="text-blue-600 text-lg">+</span> 
-                  <span class="ml-2">Add Language</span>
+                <button type="button" onclick="addEducation()" class="px-5 py-2 font-bold border border-blue-500 text-blue-600 bg-white rounded-lg hover:bg-blue-50 hover:shadow transition-all duration-200">
+                  <span class="text-blue-600 text-md">+</span> 
+                  <span class="ml-1">Add Education</span>
                 </button>
               </div>
             </section>
 
            
-            <section class="mt-8 space-y-6">
-              <div class="border-b border-gray-200 pb-4">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Skills</h3>
-                <p class="text-gray-600 text-sm">Include key skills, technical abilities, and tools you are proficient in.</p>
+            <section class="mt-6 space-y-4">
+              <div class="border-b border-gray-200 pb-3">
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Languages</h3>
+                <p class="text-gray-600 text-xs">Select languages and proficiency level</p>
+              </div>
+              <div id="languageContainer"></div>
+              <div class="text-center">
+                <button type="button" onclick="addLanguage()" class="px-5 py-2 font-bold border border-blue-500 text-blue-600 bg-white rounded-lg hover:bg-blue-50 hover:shadow transition-all duration-200">
+                  <span class="text-blue-600 text-md">+</span> 
+                  <span class="ml-1">Add Language</span>
+                </button>
+              </div>
+            </section>
+
+         
+            <section class="mt-6 space-y-4">
+              <div class="border-b border-gray-200 pb-3">
+                <h3 class="text-xl font-bold text-gray-900 mb-1">Skills</h3>
+                <p class="text-gray-600 text-xs">Include key skills and technical abilities</p>
               </div>
               <div id="skillsContainer"></div>
               <div class="text-center">
-                <button type="button" onclick="addSkill()" class="px-6 py-3 font-bold border-2 border-blue-500 text-blue-600 bg-white rounded-xl hover:bg-blue-50 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
-                  <span class="text-blue-600 text-lg">+</span> 
-                  <span class="ml-2">Add Skill</span>
+                <button type="button" onclick="addSkill()" class="px-5 py-2 font-bold border border-blue-500 text-blue-600 bg-white rounded-lg hover:bg-blue-50 hover:shadow transition-all duration-200">
+                  <span class="text-blue-600 text-md">+</span> 
+                  <span class="ml-1">Add Skill</span>
                 </button>
               </div>
             </section>
           </form>
         </div>
 
-        <!-- Preview Section - 40% width -->
-        <div class="bg-white shadow-xl rounded-2xl p-8 sticky top-8 lg:col-span-2">
-          <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+      
+        <div class="bg-white shadow-xl rounded-xl p-6 sticky top-4 lg:col-span-2">
+          <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
             <span>Live Preview</span>
-            <span id="autoSaveStatus" class="ml-3 text-xs bg-green-100 text-green-800 px-3 py-1.5 rounded-full font-medium hidden">
+            <span id="autoSaveStatus" class="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium hidden">
               Auto-saved
             </span>
           </h3>
           
-          <div id="livePreview" class="border-2 border-dashed border-gray-300 rounded-2xl p-8 min-h-[600px] flex items-center justify-center transition-all duration-300 ease-in-out">
+          <div id="livePreview" class="border border-dashed border-gray-300 rounded-lg p-4 min-h-[500px] flex items-center justify-center transition-all duration-300 ease-in-out">
             <div class="text-center text-gray-500">
-              <div class="text-6xl mb-4">📝</div>
-              <p class="text-xl font-semibold mb-2">Please select a template</p>
-              <p class="text-gray-600">Choose a template to see your resume preview</p>
+              <div class="text-5xl mb-3">📝</div>
+              <p class="text-lg font-semibold mb-1">Please select a template</p>
+              <p class="text-gray-600 text-sm">Choose a template to see your resume preview</p>
             </div>
           </div>
           
-          <div class="mt-8 flex justify-center gap-4 flex-wrap">
-            <button type="button" onclick="showTemplatePage()" class="px-8 py-4 font-bold text-blue-600 border-2 border-blue-600 bg-white rounded-xl hover:bg-blue-50 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+          <div class="mt-6 flex justify-center gap-3 flex-wrap">
+            <button type="button" onclick="showTemplatePage()" class="px-6 py-2.5 font-bold text-blue-600 border border-blue-600 bg-white rounded-lg hover:bg-blue-50 hover:shadow transition-all duration-200">
               Select Template
             </button>
             
-            <button type="button" onclick="saveDraft()" class="px-8 py-4 font-bold text-green-600 border-2 border-green-600 bg-white rounded-xl hover:bg-green-50 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+            <button type="button" onclick="saveDraft()" class="px-6 py-2.5 font-bold text-green-600 border border-green-600 bg-white rounded-lg hover:bg-green-50 hover:shadow transition-all duration-200">
               Save Draft
             </button>
             
-            <button type="button" onclick="validateAndDownload()" class="px-8 py-4 font-bold text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+            <button type="button" onclick="validateAndDownload()" class="px-6 py-2.5 font-bold text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg hover:from-blue-600 hover:to-blue-700 hover:shadow transition-all duration-200">
               Download PDF
             </button>
           </div>
 
-          <div id="templatePreviewInfo" class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200 text-sm hidden">
+          <div id="templatePreviewInfo" class="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200 text-sm hidden">
             <strong class="text-blue-800">Selected Template:</strong> 
             <span id="currentTemplateName" class="font-semibold text-blue-900"></span>
-            <p class="text-xs text-blue-700 mt-1" id="templateDescription"></p>
+            <p class="text-xs text-blue-700 mt-0.5" id="templateDescription"></p>
           </div>
         </div>
       </div>
     </div>
 
     <div id="templatePage" class="transition-all duration-300 ease-in-out hidden">
-      
       <div class="flex justify-between items-center mb-8">
         <div>
           <h2 class="text-3xl font-bold text-gray-900">Choose Your Resume Template</h2>
@@ -385,12 +380,12 @@
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="templatesContainer">
-        
+   
       </div>
     </div>
   </main>
 
-  <script>
+<script>
     let phoneInput;
     let autoSaveInterval;
     let formChanged = false;
@@ -427,26 +422,21 @@
         pattern: /^(?:\d{4}-\d{2}-\d{2})?$/,
         message: "Please enter a valid date"
       },
-      phone: {
-        pattern: /^\+?[\d\s\-\(\)]{10,}$/,
-        message: "Please enter a valid phone number"
-      },
+      
       month: {
         pattern: /^(?:\d{4}-\d{2})?$/,
         message: "Please enter date in YYYY-MM format"
       }
     };
 
-    
+ 
     function validateField(field) {
       const fieldName = field.name;
       const fieldValue = field.value.trim();
       const validationType = field.getAttribute('data-validation');
       const errorElement = document.getElementById(`${fieldName}_error`);
       
-      
       field.classList.remove('validation-valid', 'validation-invalid', 'validation-normal');
-      
       
       if (fieldName.includes('[]') && fieldValue === '') {
         if (errorElement) {
@@ -457,7 +447,6 @@
         return true;
       }
       
-      
       if (!field.classList.contains('required-field') && fieldValue === '') {
         if (errorElement) {
           errorElement.textContent = '';
@@ -467,7 +456,6 @@
         return true;
       }
       
-    
       let isValid = false;
       let errorMessage = '';
       
@@ -517,7 +505,6 @@
           errorMessage = isValid ? '' : 'This field is required';
       }
       
-      
       if (fieldValue !== '') {
         if (isValid) {
           field.classList.add('validation-valid');
@@ -527,7 +514,6 @@
       } else {
         field.classList.add('validation-normal');
       }
-      
       
       if (errorElement) {
         if (errorMessage) {
@@ -543,11 +529,13 @@
       return isValid;
     }
 
+
     function validatePhoneField() {
       const phoneField = document.getElementById('phone');
       const errorElement = document.getElementById('phone_error');
       
       phoneField.classList.remove('validation-valid', 'validation-invalid', 'validation-normal');
+      
       
       if (phoneInput.isValidNumber()) {
         phoneField.classList.add('validation-valid');
@@ -560,6 +548,7 @@
       } else {
         phoneField.classList.add('validation-invalid');
         if (errorElement) {
+          
           errorElement.textContent = 'Please enter a valid phone number';
           errorElement.classList.remove('hidden');
         }
@@ -567,17 +556,14 @@
       }
     }
 
-   
     function validateAllFields() {
       let isValid = true;
       const fields = document.querySelectorAll('[data-validation]');
-      
       
       fields.forEach(field => {
         field.classList.remove('validation-invalid', 'validation-valid');
         field.classList.add('validation-normal');
       });
-      
       
       fields.forEach(field => {
         if (field.classList.contains('required-field') || field.value.trim() !== '') {
@@ -587,11 +573,10 @@
         }
       });
       
-  
+     
       if (!validatePhoneField()) {
         isValid = false;
       }
-      
       
       if (!validateDynamicSections()) {
         isValid = false;
@@ -600,24 +585,20 @@
       return isValid;
     }
 
-    
     function validateLanguagePair(languageField, levelField, index) {
       let isValid = true;
       
       const languageValue = languageField.value.trim();
       const levelValue = levelField.value.trim();
       
-     
       languageField.classList.remove('validation-invalid', 'validation-valid', 'validation-normal');
       levelField.classList.remove('validation-invalid', 'validation-valid', 'validation-normal');
       
-   
       if (languageValue === '' && levelValue === '') {
         languageField.classList.add('validation-normal');
         levelField.classList.add('validation-normal');
         return true;
       }
-      
       
       if (languageValue === '' || levelValue === '') {
         isValid = false;
@@ -628,11 +609,11 @@
           const errorId = `languages_${index}_error`;
           let errorElement = document.getElementById(errorId);
           if (!errorElement) {
-            const parentDiv = languageField.closest('.mb-4');
+            const parentDiv = languageField.closest('.mb-3');
             if (parentDiv) {
               errorElement = document.createElement('span');
               errorElement.id = errorId;
-              errorElement.className = 'text-red-500 text-xs mt-1';
+              errorElement.className = 'text-red-500 text-xs mt-0.5';
               parentDiv.appendChild(errorElement);
             }
           }
@@ -648,11 +629,11 @@
           const errorId = `language_level_${index}_error`;
           let errorElement = document.getElementById(errorId);
           if (!errorElement) {
-            const parentDiv = levelField.closest('.mb-4');
+            const parentDiv = levelField.closest('.mb-3');
             if (parentDiv) {
               errorElement = document.createElement('span');
               errorElement.id = errorId;
-              errorElement.className = 'text-red-500 text-xs mt-1';
+              errorElement.className = 'text-red-500 text-xs mt-0.5';
               parentDiv.appendChild(errorElement);
             }
           }
@@ -662,11 +643,9 @@
           }
         }
       } else {
-        // Both fields are filled - mark as valid
         languageField.classList.add('validation-valid');
         levelField.classList.add('validation-valid');
         
-        // Clear error messages
         const languageErrorId = `languages_${index}_error`;
         const levelErrorId = `language_level_${index}_error`;
         const languageErrorElement = document.getElementById(languageErrorId);
@@ -685,10 +664,8 @@
       return isValid;
     }
 
-  
     function validateDynamicSections() {
       let isValid = true;
-      
       
       const jobTitles = document.querySelectorAll('input[name="job_title[]"]');
       const hasEmploymentData = Array.from(jobTitles).some(field => field.value.trim() !== '');
@@ -703,11 +680,11 @@
             const errorId = `job_title_${index}_error`;
             let errorElement = document.getElementById(errorId);
             if (!errorElement) {
-              const parentDiv = field.closest('.mb-4');
+              const parentDiv = field.closest('.mb-3');
               if (parentDiv) {
                 errorElement = document.createElement('span');
                 errorElement.id = errorId;
-                errorElement.className = 'text-red-500 text-xs mt-1';
+                errorElement.className = 'text-red-500 text-xs mt-0.5';
                 parentDiv.appendChild(errorElement);
               }
             }
@@ -728,7 +705,6 @@
         });
       }
       
-      
       const degrees = document.querySelectorAll('input[name="degree[]"]');
       const hasEducationData = Array.from(degrees).some(field => field.value.trim() !== '');
       
@@ -742,11 +718,11 @@
             const errorId = `degree_${index}_error`;
             let errorElement = document.getElementById(errorId);
             if (!errorElement) {
-              const parentDiv = field.closest('.mb-4');
+              const parentDiv = field.closest('.mb-3');
               if (parentDiv) {
                 errorElement = document.createElement('span');
                 errorElement.id = errorId;
-                errorElement.className = 'text-red-500 text-xs mt-1';
+                errorElement.className = 'text-red-500 text-xs mt-0.5';
                 parentDiv.appendChild(errorElement);
               }
             }
@@ -767,7 +743,6 @@
         });
       }
       
-    
       const languageFields = document.querySelectorAll('select[name="languages[]"]');
       const levelFields = document.querySelectorAll('select[name="language_level[]"]');
       
@@ -780,24 +755,20 @@
         }
       });
       
-      
       const skillFields = document.querySelectorAll('input[name="skills[]"]');
       const skillLevelFields = document.querySelectorAll('select[name="skill_level[]"]');
       
       skillFields.forEach((skillField, index) => {
         const levelField = skillLevelFields[index];
         
-        
         skillField.classList.remove('validation-invalid', 'validation-valid', 'validation-normal');
         levelField.classList.remove('validation-invalid', 'validation-valid', 'validation-normal');
         
-      
         if (skillField.value.trim() === '' && levelField.value.trim() === '') {
           skillField.classList.add('validation-normal');
           levelField.classList.add('validation-normal');
           return;
         }
-        
         
         if (skillField.value.trim() === '' || levelField.value.trim() === '') {
           isValid = false;
@@ -808,11 +779,11 @@
             const errorId = `skills_${index}_error`;
             let errorElement = document.getElementById(errorId);
             if (!errorElement) {
-              const parentDiv = skillField.closest('.mb-4');
+              const parentDiv = skillField.closest('.mb-3');
               if (parentDiv) {
                 errorElement = document.createElement('span');
                 errorElement.id = errorId;
-                errorElement.className = 'text-red-500 text-xs mt-1';
+                errorElement.className = 'text-red-500 text-xs mt-0.5';
                 parentDiv.appendChild(errorElement);
               }
             }
@@ -828,11 +799,11 @@
             const errorId = `skill_level_${index}_error`;
             let errorElement = document.getElementById(errorId);
             if (!errorElement) {
-              const parentDiv = levelField.closest('.mb-4');
+              const parentDiv = levelField.closest('.mb-3');
               if (parentDiv) {
                 errorElement = document.createElement('span');
                 errorElement.id = errorId;
-                errorElement.className = 'text-red-500 text-xs mt-1';
+                errorElement.className = 'text-red-500 text-xs mt-0.5';
                 parentDiv.appendChild(errorElement);
               }
             }
@@ -842,10 +813,8 @@
             }
           }
         } else {
-          
           skillField.classList.add('validation-valid');
           levelField.classList.add('validation-valid');
-          
           
           const skillErrorId = `skills_${index}_error`;
           const levelErrorId = `skill_level_${index}_error`;
@@ -866,7 +835,6 @@
       return isValid;
     }
 
- 
     function isMonthInputSupported() {
       try {
         const input = document.createElement('input');
@@ -877,26 +845,23 @@
       }
     }
 
-    
     function createUniversalDateInput(name, placeholder = 'YYYY-MM') {
       const supportsMonth = isMonthInputSupported();
       
       if (supportsMonth) {
-      
         return `
           <input type="month" 
                  name="${name}" 
-                 class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" 
+                 class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" 
                  oninput="validateField(this)" 
                  data-validation="month"
                  title="Select month and year">
         `;
       } else {
-       
         return `
           <input type="text" 
                  name="${name}" 
-                 class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" 
+                 class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" 
                  placeholder="${placeholder}"
                  pattern="[0-9]{4}-[0-9]{2}"
                  title="Please enter date in YYYY-MM format (e.g., 2023-12)"
@@ -907,15 +872,12 @@
       }
     }
 
-   
     function handleUniversalDateInput(input) {
       let value = input.value.replace(/[^0-9-]/g, '');
-      
       
       if (value.length > 7) {
         value = value.slice(0, 7);
       }
-      
       
       if (value.length === 4 && !value.includes('-')) {
         value += '-';
@@ -925,136 +887,131 @@
       validateField(input);
     }
 
-    
     function addEmployment() {
       const container = document.getElementById('employmentContainer');
       employmentCounter++;
       const index = employmentCounter;
       
-    
       const startDateInput = createUniversalDateInput('job_start[]');
       const endDateInput = createUniversalDateInput('job_end[]');
       
       container.insertAdjacentHTML('beforeend', `
-        <div class="space-y-4 mt-6 p-6 border border-gray-200 rounded-xl employment-item bg-gray-50">
+        <div class="space-y-3 mt-4 p-4 border border-gray-200 rounded-lg employment-item bg-gray-50">
           <div class="flex justify-between items-center">
-            <h4 class="font-bold text-gray-700 text-lg">Job #${index}</h4>
-            <button type="button" onclick="removeEmployment(this)" class="text-red-500 hover:text-red-700 font-medium">
+            <h4 class="font-bold text-gray-700 text-md">Job #${index}</h4>
+            <button type="button" onclick="removeEmployment(this)" class="text-red-500 hover:text-red-700 font-medium text-sm">
               Remove
             </button>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">Job Title</label>
-              <input type="text" name="job_title[]" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
-              <span class="text-red-500 text-xs mt-1 hidden" id="job_title_${index}_error"></span>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">Job Title</label>
+              <input type="text" name="job_title[]" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
+              <span class="text-red-500 text-xs mt-0.5 hidden" id="job_title_${index}_error"></span>
             </div>
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">Company</label>
-              <input type="text" name="company[]" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
-              <span class="text-red-500 text-xs mt-1 hidden" id="company_${index}_error"></span>
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">Company</label>
+              <input type="text" name="company[]" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
+              <span class="text-red-500 text-xs mt-0.5 hidden" id="company_${index}_error"></span>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">Start Date</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">Start Date</label>
               ${startDateInput}
-              <p class="text-xs text-gray-500 mt-1">Format: YYYY-MM (e.g., 2020-01)</p>
+              <p class="text-xs text-gray-500 mt-0.5">Format: YYYY-MM (e.g., 2020-01)</p>
             </div>
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">End Date</label>
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">End Date</label>
               ${endDateInput}
-              <p class="text-xs text-gray-500 mt-1">Format: YYYY-MM (e.g., 2023-12)</p>
+              <p class="text-xs text-gray-500 mt-0.5">Format: YYYY-MM (e.g., 2023-12)</p>
             </div>
           </div>
-          <div class="mb-4">
-            <label class="block text-sm font-semibold text-gray-800 mb-2">Job Description and Responsibilities</label>
-            <textarea name="job_description[]" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="textarea" rows="3"></textarea>
-            <span class="text-red-500 text-xs mt-1 hidden" id="job_description_${index}_error"></span>
+          <div class="mb-3">
+            <label class="block text-sm font-semibold text-gray-800 mb-1">Job Description</label>
+            <textarea name="job_description[]" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="textarea" rows="2"></textarea>
+            <span class="text-red-500 text-xs mt-0.5 hidden" id="job_description_${index}_error"></span>
           </div>
         </div>
       `);
       updateProgress();
     }
 
-   
     function addEducation() {
       const container = document.getElementById('educationContainer');
       educationCounter++;
       const index = educationCounter;
       
-      
       const startDateInput = createUniversalDateInput('edu_start[]');
       const endDateInput = createUniversalDateInput('edu_end[]');
       
       container.insertAdjacentHTML('beforeend', `
-        <div class="space-y-4 mt-6 p-6 border border-gray-200 rounded-xl education-item bg-gray-50">
+        <div class="space-y-3 mt-4 p-4 border border-gray-200 rounded-lg education-item bg-gray-50">
           <div class="flex justify-between items-center">
-            <h4 class="font-bold text-gray-700 text-lg">Education #${index}</h4>
-            <button type="button" onclick="removeEducation(this)" class="text-red-500 hover:text-red-700 font-medium">
+            <h4 class="font-bold text-gray-700 text-md">Education #${index}</h4>
+            <button type="button" onclick="removeEducation(this)" class="text-red-500 hover:text-red-700 font-medium text-sm">
               Remove
             </button>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">Degree/Certificate</label>
-              <input type="text" name="degree[]" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
-              <span class="text-red-500 text-xs mt-1 hidden" id="degree_${index}_error"></span>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">Degree/Certificate</label>
+              <input type="text" name="degree[]" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
+              <span class="text-red-500 text-xs mt-0.5 hidden" id="degree_${index}_error"></span>
             </div>
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">School/University</label>
-              <input type="text" name="school[]" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
-              <span class="text-red-500 text-xs mt-1 hidden" id="school_${index}_error"></span>
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">School/University</label>
+              <input type="text" name="school[]" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
+              <span class="text-red-500 text-xs mt-0.5 hidden" id="school_${index}_error"></span>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">Start Date</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">Start Date</label>
               ${startDateInput}
-              <p class="text-xs text-gray-500 mt-1">Format: YYYY-MM (e.g., 2018-09)</p>
+              <p class="text-xs text-gray-500 mt-0.5">Format: YYYY-MM (e.g., 2018-09)</p>
             </div>
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">End Date</label>
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">End Date</label>
               ${endDateInput}
-              <p class="text-xs text-gray-500 mt-1">Format: YYYY-MM (e.g., 2022-05)</p>
+              <p class="text-xs text-gray-500 mt-0.5">Format: YYYY-MM (e.g., 2022-05)</p>
             </div>
           </div>
-          <div class="mb-4">
-            <label class="block text-sm font-semibold text-gray-800 mb-2">Description of Studies</label>
-            <textarea name="edu_description[]" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="textarea" rows="3"></textarea>
-            <span class="text-red-500 text-xs mt-1 hidden" id="edu_description_${index}_error"></span>
+          <div class="mb-3">
+            <label class="block text-sm font-semibold text-gray-800 mb-1">Description</label>
+            <textarea name="edu_description[]" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="textarea" rows="2"></textarea>
+            <span class="text-red-500 text-xs mt-0.5 hidden" id="edu_description_${index}_error"></span>
           </div>
         </div>
       `);
       updateProgress();
     }
 
-   
     function addLanguage() {
       const container = document.getElementById('languageContainer');
       languageCounter++;
       const index = languageCounter;
       
       container.insertAdjacentHTML('beforeend', `
-        <div class="space-y-4 mt-6 p-6 border border-gray-200 rounded-xl language-item bg-gray-50">
+        <div class="space-y-3 mt-4 p-4 border border-gray-200 rounded-lg language-item bg-gray-50">
           <div class="flex justify-between items-center">
-            <h4 class="font-bold text-gray-700 text-lg">Language #${index}</h4>
-            <button type="button" onclick="removeLanguage(this)" class="text-red-500 hover:text-red-700 font-medium">
+            <h4 class="font-bold text-gray-700 text-md">Language #${index}</h4>
+            <button type="button" onclick="removeLanguage(this)" class="text-red-500 hover:text-red-700 font-medium text-sm">
               Remove
             </button>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">Language</label>
-              <select name="languages[]" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">Language</label>
+              <select name="languages[]" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
                 <option value="">Select Language</option>
                 @include('partials.language-options')
               </select>
-              <span class="text-red-500 text-xs mt-1 hidden" id="languages_${index}_error"></span>
+              <span class="text-red-500 text-xs mt-0.5 hidden" id="languages_${index}_error"></span>
             </div>
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">Proficiency</label>
-              <select name="language_level[]" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">Proficiency</label>
+              <select name="language_level[]" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
                 <option value="">Select Proficiency</option>
                 <option value="Native">Native</option>
                 <option value="Fluent">Fluent</option>
@@ -1062,7 +1019,7 @@
                 <option value="Intermediate">Intermediate</option>
                 <option value="Basic">Basic</option>
               </select>
-              <span class="text-red-500 text-xs mt-1 hidden" id="language_level_${index}_error"></span>
+              <span class="text-red-500 text-xs mt-0.5 hidden" id="language_level_${index}_error"></span>
             </div>
           </div>
         </div>
@@ -1070,36 +1027,35 @@
       updateProgress();
     }
 
-   
     function addSkill() {
       const container = document.getElementById('skillsContainer');
       skillCounter++;
       const index = skillCounter;
       
       container.insertAdjacentHTML('beforeend', `
-        <div class="space-y-4 mt-6 p-6 border border-gray-200 rounded-xl skill-item bg-gray-50">
+        <div class="space-y-3 mt-4 p-4 border border-gray-200 rounded-lg skill-item bg-gray-50">
           <div class="flex justify-between items-center">
-            <h4 class="font-bold text-gray-700 text-lg">Skill #${index}</h4>
-            <button type="button" onclick="removeSkill(this)" class="text-red-500 hover:text-red-700 font-medium">
+            <h4 class="font-bold text-gray-700 text-md">Skill #${index}</h4>
+            <button type="button" onclick="removeSkill(this)" class="text-red-500 hover:text-red-700 font-medium text-sm">
               Remove
             </button>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">Skill</label>
-              <input type="text" name="skills[]" placeholder="e.g., JavaScript, Project Management" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
-              <span class="text-red-500 text-xs mt-1 hidden" id="skills_${index}_error"></span>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">Skill</label>
+              <input type="text" name="skills[]" placeholder="e.g., JavaScript, Project Management" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 required-field validation-normal" oninput="validateField(this)" data-validation="text">
+              <span class="text-red-500 text-xs mt-0.5 hidden" id="skills_${index}_error"></span>
             </div>
-            <div class="mb-4">
-              <label class="block text-sm font-semibold text-gray-800 mb-2">Level</label>
-              <select name="skill_level[]" class="w-full px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
+            <div class="mb-3">
+              <label class="block text-sm font-semibold text-gray-800 mb-1">Level</label>
+              <select name="skill_level[]" class="w-full px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer custom-select required-field validation-normal" onchange="validateField(this)" data-validation="select">
                 <option value="">Select Level</option>
                 <option value="Expert">Expert</option>
                 <option value="Advanced">Advanced</option>
                 <option value="Intermediate">Intermediate</option>
                 <option value="Beginner">Beginner</option>
               </select>
-              <span class="text-red-500 text-xs mt-1 hidden" id="skill_level_${index}_error"></span>
+              <span class="text-red-500 text-xs mt-0.5 hidden" id="skill_level_${index}_error"></span>
             </div>
           </div>
         </div>
@@ -1107,7 +1063,6 @@
       updateProgress();
     }
 
-    
     document.addEventListener('DOMContentLoaded', function() {
         initializePhoneInput();
         initializeAutoSave();
@@ -1124,39 +1079,110 @@
         addLanguage();
         addSkill();
 
-      
         console.log('Browser month input support:', isMonthInputSupported() ? 'Supported' : 'Not Supported - Using Fallback');
     });
 
-    function initializePhoneInput() {
-        phoneInput = window.intlTelInput(document.querySelector("#phone"), {
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-            preferredCountries: ['us', 'gb', 'ca', 'au'],
-            separateDialCode: true,
-            initialCountry: "auto",
-            geoIpLookup: function(callback) {
-                fetch("https://ipapi.co/country/")
-                    .then(response => response.text())
-                    .then(countryCode => callback(countryCode))
-                    .catch(() => callback("us"));
-            }
-        });
+    function formatPhoneNumber() {
+    const phoneField = document.getElementById('phone');
+    const currentValue = phoneField.value;
+    
+   
+    if (phoneInput && phoneInput.isValidNumber()) {
+     
+        const formattedNumber = phoneInput.getNumber(intlTelInputUtils.numberFormat.NATIONAL);
+        
+     
+        document.getElementById('fullPhone').value = phoneInput.getNumber();
+        
+      
+        phoneField.value = formattedNumber;
+    }
+}
+  
+function initializePhoneInput() {
+    phoneInput = window.intlTelInput(document.querySelector("#phone"), {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        preferredCountries: ['pk', 'us', 'gb', 'ca', 'au', 'in'],
+        separateDialCode: false, 
+        initialCountry: "pk",
+        nationalMode: true, 
+        formatOnDisplay: true,
+        autoPlaceholder: "aggressive"
+    });
 
-        document.getElementById('phone').addEventListener('input', function() {
-            validatePhoneField();
-        });
+   
+    setTimeout(() => {
+        if (!document.getElementById('phone').getAttribute('placeholder')) {
+            document.getElementById('phone').setAttribute('placeholder', '301 2345678');
+        }
+    }, 1000);
+
+ 
+    document.getElementById('phone').addEventListener('input', function(e) {
+        
+        setTimeout(() => {
+            formatPhoneNumber();
+        }, 100);
+        validatePhoneField();
+    });
+
+    
+    document.getElementById('phone').addEventListener('countrychange', function() {
+        setTimeout(() => {
+            formatPhoneNumber();
+        }, 100);
+        validatePhoneField();
+    });
+
+    
+    document.getElementById('phone').addEventListener('blur', function() {
+        formatPhoneNumber();
+        validatePhoneField();
+    });
+}
+
+    
+    function initializeAutoSave() {
+        autoSaveInterval = setInterval(() => {
+            if (formChanged) {
+                saveDraft();
+            }
+        }, 15000); 
     }
 
+   
+    function hasMinimumDataForSave() {
+        const firstName = document.querySelector('[name="first_name"]').value.trim();
+        const lastName = document.querySelector('[name="last_name"]').value.trim();
+        const email = document.querySelector('[name="email"]').value.trim();
+        
+        
+        const filledFields = [
+            firstName,
+            lastName, 
+            email
+        ].filter(field => field !== '').length;
+        
+        return filledFields >= 2;
+    }
+
+   
     function handleInputChange() {
         formChanged = true;
         updateProgress();
-        debouncedPreviewUpdate();
+        
+       
+        if (hasMinimumDataForSave()) {
+            debouncedPreviewUpdate();
+        }
     }
 
+  
     function getFormData() {
         const form = document.getElementById('resumeForm');
         const formData = new FormData(form);
         const data = {};
+        
         
         for (let [key, value] of formData.entries()) {
             if (key.endsWith('[]')) {
@@ -1164,29 +1190,120 @@
                 if (!data[baseKey]) {
                     data[baseKey] = [];
                 }
-                data[baseKey].push(value);
+              
+                if (value && value.trim() !== '') {
+                    data[baseKey].push(value);
+                } else {
+                    data[baseKey].push(''); 
+                }
             } else {
-                data[key] = value;
+                
+                data[key] = value || '';
             }
         }
         
-        if (phoneInput.isValidNumber()) {
+    
+        const phoneValue = document.getElementById('phone').value;
+        if (phoneInput && phoneInput.isValidNumber()) {
             data['phone'] = phoneInput.getNumber();
         } else {
-            data['phone'] = document.getElementById('phone').value;
+            data['phone'] = phoneValue || '';
         }
         
-        data['template'] = document.getElementById('selectedTemplate').value;
+      
+        data['template'] = document.getElementById('selectedTemplate').value || '';
         
+        console.log('Form data prepared for save:', data);
         return data;
     }
 
-    function initializeAutoSave() {
-        autoSaveInterval = setInterval(() => {
-            if (formChanged) {
-                saveDraft();
+    
+    function saveDraft() {
+        if (!formChanged) {
+            console.log('Skipping save - no changes');
+            return;
+        }
+        
+       
+        const data = getFormData();
+        localStorage.setItem('resumeDraft', JSON.stringify(data));
+        localStorage.setItem('resumeDraftTimestamp', new Date().toISOString());
+        
+        
+        if (hasMinimumDataForSave()) {
+            updateAutoSaveStatus('saving');
+        }
+        
+       
+        if (hasSufficientDataForServer()) {
+            fetch('{{ route("resume.save") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    
+                    console.log('Server save failed, but localStorage saved successfully');
+                    if (hasMinimumDataForSave()) {
+                        updateAutoSaveStatus('saved');
+                    }
+                    formChanged = false;
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(result => {
+                if (result && result.success) {
+                    if (hasMinimumDataForSave()) {
+                        updateAutoSaveStatus('saved');
+                    }
+                    formChanged = false;
+                    console.log('Server save successful');
+                } else {
+                    
+                    if (hasMinimumDataForSave()) {
+                        updateAutoSaveStatus('saved');
+                    }
+                    formChanged = false;
+                    console.log('Server indicated failure, but localStorage saved');
+                }
+            })
+            .catch(error => {
+                
+                if (hasMinimumDataForSave()) {
+                    updateAutoSaveStatus('saved');
+                }
+                formChanged = false;
+                console.log('Network error, but localStorage saved successfully');
+            });
+        } else {
+           
+            if (hasMinimumDataForSave()) {
+                updateAutoSaveStatus('saved');
             }
-        }, 10000); 
+            formChanged = false;
+            console.log('Saved to localStorage only - insufficient data for server');
+        }
+    }
+
+   
+    function hasSufficientDataForServer() {
+        const firstName = document.querySelector('[name="first_name"]').value.trim();
+        const lastName = document.querySelector('[name="last_name"]').value.trim();
+        const email = document.querySelector('[name="email"]').value.trim();
+        
+        
+        if (firstName === '') return false;
+        
+       
+        if (!phoneInput || !phoneInput.isValidNumber()) return false;
+        
+        const otherFields = [lastName, email].filter(field => field !== '').length;
+        return otherFields >= 1;
     }
 
     function updateAutoSaveStatus(status) {
@@ -1228,46 +1345,12 @@
         }
     }
 
-    function saveDraft() {
-        if (!formChanged) return;
-        
-        updateAutoSaveStatus('saving');
-        
-        const data = getFormData();
-        
-        localStorage.setItem('resumeDraft', JSON.stringify(data));
-        localStorage.setItem('resumeDraftTimestamp', new Date().toISOString());
-        
-        fetch('{{ route("resume.save") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                updateAutoSaveStatus('saved');
-                formChanged = false;
-            } else {
-                updateAutoSaveStatus('error');
-            }
-        })
-        .catch(error => {
-            updateAutoSaveStatus('error');
-            console.error('Auto-save failed:', error);
-        });
-    }
-
     function clearDraft() {
         if (confirm('Are you sure you want to clear your current draft?')) {
             localStorage.removeItem('resumeDraft');
             localStorage.removeItem('resumeDraftTimestamp');
             document.getElementById('resumeForm').reset();
             
-           
             document.querySelectorAll('input, textarea, select').forEach(el => {
                 el.classList.remove('validation-valid', 'validation-invalid');
                 el.classList.add('validation-normal');
@@ -1442,9 +1525,9 @@
         if (!template) {
             document.getElementById('livePreview').innerHTML = `
                 <div class="text-center text-gray-500">
-                    <div class="text-6xl mb-4">📝</div>
-                    <p class="text-xl font-semibold mb-2">Please select a template</p>
-                    <p class="text-gray-600">Choose a template to see your resume preview</p>
+                    <div class="text-5xl mb-3">📝</div>
+                    <p class="text-lg font-semibold mb-1">Please select a template</p>
+                    <p class="text-gray-600 text-sm">Choose a template to see your resume preview</p>
                 </div>
             `;
             return;
@@ -1538,7 +1621,7 @@
             info: 'bg-blue-100 border-blue-400 text-blue-700'
         };
         
-        container.className = `${colors[type]} border-l-4 p-4 rounded-xl`;
+        container.className = `${colors[type]} border-l-4 p-3 rounded-lg`;
         container.innerHTML = message;
         container.classList.remove('hidden');
         
@@ -1547,23 +1630,18 @@
         }, 5000);
     }
 
-   
     function validateAndDownload() {
         console.log('=== DOWNLOAD PROCESS STARTED ===');
         
-       
         saveDraft();
         
-        
-        document.querySelectorAll('.validation-invalid, .validation-valid').forEach(el => {
+        document.querySelectorAll('.validation-invalid', '.validation-valid').forEach(el => {
             el.classList.remove('validation-invalid', 'validation-valid');
             el.classList.add('validation-normal');
         });
         
-        
         if (!validateAllFields()) {
             showMessage('Please fix all validation errors before downloading.', 'error');
-            
             
             const firstError = document.querySelector('.validation-invalid');
             if (firstError) {
@@ -1574,7 +1652,6 @@
             return false;
         }
         
-       
         const selectedTemplate = document.getElementById('selectedTemplate').value;
         if (!selectedTemplate) {
             showMessage('Please select a template before downloading.', 'error');
@@ -1583,17 +1660,13 @@
         }
 
        
-        if (phoneInput.isValidNumber()) {
-            document.getElementById('fullPhone').value = phoneInput.getNumber();
-            console.log('Phone number processed:', phoneInput.getNumber());
-        } else {
+        if (!phoneInput.isValidNumber()) {
             showMessage('Please enter a valid phone number.', 'error');
             return false;
         }
 
         console.log('All validation passed');
         showMessage('Generating your resume PDF...', 'info');
-        
         
         console.log('Submitting form for download...');
         document.getElementById('resumeForm').submit();
@@ -1652,29 +1725,22 @@
         return scopedCss;
     }
 
-
     document.addEventListener('DOMContentLoaded', function() {
         const savedTemplate = localStorage.getItem('selectedTemplate');
         if (savedTemplate) {
             const template = JSON.parse(savedTemplate);
             
-            
             document.getElementById('selectedTemplate').value = template.id;
-            
             
             document.getElementById('currentTemplateName').textContent = template.name;
             document.getElementById('templateDescription').textContent = template.description;
             document.getElementById('templatePreviewInfo').classList.remove('hidden');
             
-           
             refreshPreview();
             
-           
             localStorage.removeItem('selectedTemplate');
             
-           
             showMessage(`Template "${template.name}" selected! Start filling your resume details.`, 'success');
-            
             
             document.getElementById('templatePreviewInfo').scrollIntoView({ 
                 behavior: 'smooth' 
@@ -1682,7 +1748,6 @@
         }
     });
 
-    
     function showTemplatePage() {
         document.getElementById('formPage').classList.add('hidden');
         document.getElementById('templatePage').classList.remove('hidden');
@@ -1693,7 +1758,7 @@
         document.getElementById('formPage').classList.remove('hidden');
     }
 
-    function loadTemplates() {
+   function loadTemplates() {
         const templates = [
             {
                 id: 'template1',
@@ -1769,7 +1834,7 @@
         refreshPreview();
         showMessage(`Template selected: ${templateName}`, 'success');
     }
+</script>
 
-  </script>
 </body>
 </html>

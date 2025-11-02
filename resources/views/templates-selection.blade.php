@@ -184,7 +184,7 @@
             <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
                 <div class="text-center lg:text-left">
                     <h3 class="text-2xl font-bold text-white mb-2">
-                        <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                        
                         Template Selected: <span id="selectedTemplateName" class="font-extrabold gradient-text"></span>
                     </h3>
                     <p id="selectedTemplateDescription" class="text-white/80 text-lg"></p>
@@ -192,7 +192,7 @@
                 <div class="flex flex-col sm:flex-row gap-4">
                     <button onclick="startWithSelectedTemplate()" 
                             class="btn-primary text-white px-8 py-4 rounded-xl font-semibold flex items-center gap-3 justify-center">
-                        <i class="fas fa-rocket"></i>
+                       
                         Start Building Resume
                     </button>
                     <a href="{{ url('/') }}" 
